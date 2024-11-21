@@ -2,7 +2,7 @@
 
 First - initialize the database:
 
-````flask --app chorister_db init-db```
+```flask --app chorister_db init-db```
 
 Second - run the app:
 
