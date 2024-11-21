@@ -40,4 +40,7 @@ def create_app(test_config=None):
     app.register_blueprint(general.bp)
     app.add_url_rule('/', endpoint='index')
 
+    from . import choristers
+    app.register_blueprint(choristers.bp)
+
     return app
