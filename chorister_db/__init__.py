@@ -8,7 +8,8 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+        DATABASE=os.path.join(app.instance_path, 'choristerdb.sqlite'),
+        USERS=os.path.join(app.instance_path, 'dbusers.sqlite')
     )
 
     if test_config is None:
@@ -28,5 +29,15 @@ def create_app(test_config=None):
     @app.route('/hello')
     def hello():
         return 'Welcome to the choir attendance app'
+    
+    from . import db
+    db.init_app(app)
+
+    from . import auth
+    app.register_blueprint(auth.bp)
+
+    from . import general
+    app.register_blueprint(general.bp)
+    app.add_url_rule('/', endpoint='index')
 
     return app
