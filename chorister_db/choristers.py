@@ -26,6 +26,29 @@ def members():
 
 @bp.route('/add_member', methods=('GET', 'POST'))
 def add_member():
-    choristerId = 
-    firstName = 
-    l
+    choristerId = request.form['First Name']
+    firstName = request.form['First Name']
+    lastName = request.form['Last Name']
+    street1 = request.form['Street Address 1']
+    street2 = request.form['Street Address 2']
+    city = request.form['City']
+    state = request.form['State']
+    zip = request.form['ZIP Code']
+    email = request.form['email']
+    phone = request.form['Phone number']
+    sectionId = request.form['Section ID']
+    statusId = request.form['Status ID']
+    sectionName = request.form['Section name']
+    statusName = request.form['Status']
+    
+    choristers = get_db()
+    value_list = [choristerId, firstName, lastName, street1, street2, city,
+    state, zip, email, phone, sectionId, statusId, sectionName, statusName]
+    value_statement = ', '.join(value_list)
+    insert_statement = 'INSERT INTO chorister (choristerId, firstName, lastName, street1,\
+        street2, city, state, zip, email, phone, sectionId, statusId,\
+        sectionName, statusName) VALUES (' + value_statement + ')'
+    new_member = choristers.execute(insert_statement).fetchall()
+
+    return render_template('choristers/add_member.html', new_member=new_member)
+
