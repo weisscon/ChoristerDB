@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Add a New Member{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        <label for="choristerId">Chorister Id</label>
+        <input name="choristerId" id="choristerId" required>
+        <label for="First Name">First Name</label>
+        <input name="First Name" id="First Name" required>
+        <label for="Last Name">Last Name</label>
+        <input name="Last Name" id="Last Name" required>
+        <label for="Street Address 1">Address 1</label>
+        <input name="Street Address 1" id="Street Address 1" required>
+        <label for="Street Address 2">Address 2</label>
+        <input name="Street Address 2" id="Street Address 2" required>
+        <label for="City">City</label>
+        <input name="City" id="City" required>
+        <label for="State">State</label>
+        <input name="State" id="State" required>
+        <label for="ZIP Code">ZIP Code</label>
+        <input name="ZIP Code" id="ZIP Code" required>
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" required>
+        <label for="Phone number">Phone Number (no formatting)</label>
+        <input type="number" name="Phone number" id="Phone number" required>
+        <label for="Section ID">Section</label>
+        <select name="Section ID" id="Section ID">
+            {% for section in sections %}
+                <option value="{{ section['sectionId'] }}">{{ section['sectionName'] }}</option>
+            {% endfor %}
+        </select>
+        <label for="Status ID">Status</label>
+        <select name="Status ID" id="Status ID">
+            {% for status in statuses %}
+                <option value="{{ status['statusId'] }}">{{ status['statusName'] }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Add New Chorister">
+    </form>
+{% endblock %}

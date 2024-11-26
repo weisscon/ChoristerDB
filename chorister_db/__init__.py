@@ -43,4 +43,7 @@ def create_app(test_config=None):
     from . import choristers
     app.register_blueprint(choristers.bp)
 
+    from . import dbadmin
+    app.register_blueprint(dbadmin.bp)
+
     return app

@@ -8,9 +8,12 @@
     <a href="{{ url_for('general.reset_password') }}">Reset Password</a>
     {% if 1 in permissions %}
         <p>This will be a link to DB Admin pages.  This only appears if the user has DB admin privileges</p>
+        <p><a href="{{ url_for('dbadmin.useradmin') }}">User Management</a></p>
     {% endif %}
     {% if 2 in permissions %}
         <p>This will be a link to Chorister Admin pages.  This only appears if the user has Chorister admin privileges</p>
+        <p><a href="{{ url_for('choristers.members') }}">View All Members</a></p>
+        <p><a href="{{ url_for('choristers.add_member') }}">Add a New Member</a></p>
     {% endif %}
     {% if 3 in permissions %}
         <p>This will be a link to Attendance pages.  This only appears if the user has Attendance privileges</p>

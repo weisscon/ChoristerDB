@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}User Admin{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  {% for user in users %}
+    <p>{{ user['username'] }} <a href="{{ url_for('dbadmin.reset_forgot', userId = user['accountId']) }}">Reset Forgotten Password</a> <a href="{{ url_for('dbadmin.set_permissions', userId = user['accountId']) }}">Set Permissions</a></p>
+  {% endfor %}
+
+  <hr></hr>
+  <a href="{{ url_for('dbadmin.add_user') }}">Add New Database User</a>
+{% endblock %}

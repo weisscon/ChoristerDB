@@ -1,8 +1,14 @@
 {% extends 'base.html' %}
+
 {% block header %}
   <h1>{% block title %}Choir Members{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
-    <p>Here is a list of all choir members</p>
+  <p>Chorister ID | First Name | Last Name | Address 1 | Address 2 | City | State | Zipcode | Email | Phone | Section | Status |</p>
+  {% for singer in chorister %}
+    <p>{{ singer['choristerId'] }} | {{ singer['firstName'] }} | {{ singer['lastName'] }} | {{ singer['street1'] }} |
+       {{ singer['street2'] }} | {{ singer['city'] }} | {{ singer['state'] }} | {{ singer['zip'] }} | {{ singer['email'] }} | 
+       {{ singer['phone'] }} | {{ singer['sectionName'] }} | {{ singer['statusName'] }} |</p>
+  {% endfor %}
 {% endblock %}

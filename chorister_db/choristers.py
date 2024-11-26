@@ -26,29 +26,46 @@ def members():
 
 @bp.route('/add_member', methods=('GET', 'POST'))
 def add_member():
-    choristerId = request.form['First Name']
-    firstName = request.form['First Name']
-    lastName = request.form['Last Name']
-    street1 = request.form['Street Address 1']
-    street2 = request.form['Street Address 2']
-    city = request.form['City']
-    state = request.form['State']
-    zip = request.form['ZIP Code']
-    email = request.form['email']
-    phone = request.form['Phone number']
-    sectionId = request.form['Section ID']
-    statusId = request.form['Status ID']
-    sectionName = request.form['Section name']
-    statusName = request.form['Status']
-    
+
     choristers = get_db()
-    value_list = [choristerId, firstName, lastName, street1, street2, city,
-    state, zip, email, phone, sectionId, statusId, sectionName, statusName]
-    value_statement = ', '.join(value_list)
-    insert_statement = 'INSERT INTO chorister (choristerId, firstName, lastName, street1,\
-        street2, city, state, zip, email, phone, sectionId, statusId,\
-        sectionName, statusName) VALUES (' + value_statement + ')'
-    new_member = choristers.execute(insert_statement).fetchall()
 
-    return render_template('choristers/add_member.html', new_member=new_member)
+    if request.method=="POST":
+        choristerId = request.form['choristerId'] #had to update this - originally had 'First Name' in the argument.
+        firstName = request.form['First Name']
+        lastName = request.form['Last Name']
+        street1 = request.form['Street Address 1']
+        street2 = request.form['Street Address 2']
+        city = request.form['City']
+        state = request.form['State']
+        zip = request.form['ZIP Code']
+        email = request.form['email']
+        phone = request.form['Phone number']
+        sectionId = request.form['Section ID']
+        statusId = request.form['Status ID']
+        try:
+            choristers.execute(
+                'INSERT INTO chorister (choristerId, firstName, lastName, street1, street2, city, state, zip, email, phone, sectionId, statusId)'
+                 ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                 (choristerId, firstName, lastName, street1, street2, city, state, zip, email, phone, sectionId, statusId)
+            )
+            choristers.commit()
+            flash("New chorister added")
+        except Exception as err:
+            flash(err)
 
+    sections = choristers.execute("SELECT * FROM section").fetchall()
+    statuses = choristers.execute("SELECT * FROM status").fetchall()
+
+    return render_template('choristers/add_member.html', sections=sections, statuses=statuses) #, new_member=new_member <- took this out, since the member is created through the "POST" method.
+
+    #   Took these two out, the actual singer just has the IDs.
+    #    sectionName = request.form['Section name']
+    #    statusName = request.form['Status']
+'''        
+        value_list = [choristerId, firstName, lastName, street1, street2, city,
+        state, zip, email, phone, sectionId, statusId]
+        value_statement = ', '.join(value_list)
+        insert_statement = 'INSERT INTO chorister (choristerId, firstName, lastName, street1,\
+            street2, city, state, zip, email, phone, sectionId, statusId) VALUES (' + value_statement + ')'
+        print(insert_statement)
+'''
