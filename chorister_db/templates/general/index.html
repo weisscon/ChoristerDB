@@ -17,6 +17,8 @@
     {% endif %}
     {% if 3 in permissions %}
         <p>This will be a link to Attendance pages.  This only appears if the user has Attendance privileges</p>
+        <p><a href="{{ url_for('rehearsals.meetings') }}">View All Rehearsals</a></p>
+        <p><a href="{{ url_for('rehearsals.add_meeting') }}">Add a New Rehearsal</a></p>
     {% endif %}
     {% if 4 in permissions %}
         <p>This will be a link to Treasurer pages.  This only appears if the user has Treasurer privileges</p>

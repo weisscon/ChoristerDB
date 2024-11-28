@@ -46,4 +46,7 @@ def create_app(test_config=None):
     from . import dbadmin
     app.register_blueprint(dbadmin.bp)
 
+    from . import rehearsals
+    app.register_blueprint(rehearsals.bp)
+
     return app
