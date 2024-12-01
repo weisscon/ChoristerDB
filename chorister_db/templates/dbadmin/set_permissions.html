@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Set Permissions{% endblock %}</h1>
+  <p><a href="{{ url_for('dbadmin.useradmin') }}">Back</a></p>
+{% endblock %}
+
+{% block content %}
+  <p>USER: {{ user['username'] }}</p>
+  <ul>
+    {% for permission in permissions %}
+      <li>{{ permission[1] }} 
+        {% if permission[2] == 1 %} 
+          <button><a href="{{ url_for('dbadmin.remove_permission', permissionId = permission[0], userId = user['accountId']) }}">Remove</a></button>
+        {% else %}
+          <button><a href="{{ url_for('dbadmin.add_permission', permissionId = permission[0], userId = user['accountId']) }}">Add</a></button>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

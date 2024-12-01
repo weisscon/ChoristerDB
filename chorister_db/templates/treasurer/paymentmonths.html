@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Review Payment {{ paymonths['paymentId'] }}'s Month Assignments{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  {% for month in paymonths %}
+    <p>Payment ID: {{ month['paymentId'] }} | {{ month['amount'] }}, {{ month['methodDescription'] }} paid {{ month['month'] }}/{{ month['year'] }}</p>
+  {% endfor %}
+  <p>Add another month</p>
+  <form method="post">
+    <label for="month">Month</label>
+    <input type="number" name="month" id="month" required>
+    <label for="year">Year</label>
+    <input type="number" name="year" id="year" required>
+    <input type="submit" value="Add Month">
+  </form>
+{% endblock %}

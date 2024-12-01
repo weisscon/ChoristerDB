@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Add Payment{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="choristerId">Chorister ID</label>
+    <input name="choristerId" id="choristerId" required>
+    <label for="methodId">Payment Method</label>
+    <select name="methodId" id="methodId">
+        {% for method in methods %}
+            <option value="{{ method['methodId'] }}">{{ method['methodDescription'] }}</option>
+        {% endfor %}
+    </select>
+    <label for="amount">Amount</label>
+    <input type="number" name="amount" id="amount">
+    <input type="submit" value="Add Payment">
+  </form>
+{% endblock %}

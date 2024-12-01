@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Maintain Table Values{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <div style="display: flex;">
+    <div style="width: 150px; margin: 15px;">
+        <p>Sections</p>
+        <select size="10">
+            {% for section in sections %}
+            <option>{{ section['sectionName'] }}</option>
+            {% endfor %}
+        </select>
+        <form method="post">
+            <p>Add a section</p>
+            <input name="new_section" id="new_section" required>
+            <input type="submit" formaction="{{ url_for('dbadmin.update_sections') }}" value="Add Section">
+        </form>
+    </div>
+    <div style="width: 150px; margin: 15px;">
+        <p>Chorister Statuses</p>
+        <select size="10">
+            {% for status in statuses %}
+            <option>{{ status['statusName'] }}</option>
+            {% endfor %}
+        </select>
+        <form method="post">
+            <p>Add a status</p>
+            <input name="new_status" id="new_status" required>
+            <input type="submit" formaction="{{ url_for('dbadmin.update_statuses') }}" value="Add Status">
+        </form>
+    </div>
+    <div style="width: 150px; margin: 15px;">
+        <p>Payment Methods</p>
+        <select size="10">
+            {% for method in payment_methods %}
+            <option>{{ method['methodDescription'] }}</option>
+            {% endfor %}
+        </select>
+        <form method="post">
+            <p>Add a payment method</p>
+            <input name="new_method" id="new_method" required>
+            <input type="submit" formaction="{{ url_for('dbadmin.update_paymethods') }}" value="Add Payment Methods">
+        </form>
+    </div>
+    <div style="width: 150px; margin: 15px;">
+        <p>Attendance Statuses</p>
+        <select size="10">
+            {% for status in attendance %}
+            <option>{{ status['attendanceStatus'] }}</option>
+            {% endfor %}
+        </select>
+        <form method="post">
+            <p>Add an attendance status</p>
+            <input name="new_attendance" id="new_attendance" required>
+            <input type="submit" formaction="{{ url_for('dbadmin.update_attendance') }}" value="Add Attendance Status">
+        </form>
+    </div>
+  </div>
+{% endblock %}

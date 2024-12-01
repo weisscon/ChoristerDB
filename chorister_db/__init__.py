@@ -49,4 +49,7 @@ def create_app(test_config=None):
     from . import rehearsals
     app.register_blueprint(rehearsals.bp)
 
+    from . import treasurer
+    app.register_blueprint(treasurer.bp)
+
     return app

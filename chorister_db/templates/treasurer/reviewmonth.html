@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Review Month's Payments{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="month">Month</label>
+    <input type="number" name="month" id="month" required>
+    <label for="year">Year</label>
+    <input type="number" name="year" id = "year" required>
+    <input type="submit" formaction="{{ url_for('treasurer.reviewmonthlanding') }}" value="Show Month">
+  </form>
+  {% if payments %}
+    <p>Payments</p>
+    {% for payment in payments %}
+      <p><a href="{{ url_for('treasurer.reviewmember', choristerId = payment['choristerId']) }}">{{ payment['choristerId'] }}</a> {{ payment['firstName'] }} {{ payment['lastName'] }} Payment ID: <a href="{{ url_for('treasurer.paymentmonths', paymentId = payment['paymentId']) }}">{{ payment['paymentId'] }}</a> | ${{ payment['amount'] }}, {{ payment['methodDescription'] }}</p>
+    {% endfor %}
+  {% endif %}
+{% endblock %}

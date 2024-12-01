@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Review Chorister's Payments{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="choristerId">Chorister ID</label>
+    <input name="choristerId" id="choristerId" required>
+    <input type="submit" formaction="{{ url_for('treasurer.reviewmemberlanding') }}" value="Search Chorister">
+  </form>
+  {% if member != None %}
+    <p>{{ member['firstName'] }} {{ member['lastName'] }} email: {{ member['email'] }} phone: {{ member['phone'] }}</p>
+    <p>{{ member['street1'] }}</p>
+    {% if member['street2'] %}
+      <p>{{ member['street2'] }}</p>
+    {% endif %}
+    <p>{{ member['city'] }}, {{ member['state'] }} {{ member['zip'] }}</p>
+  {% endif %}
+
+  {% if payments %}
+    <p>Payments</p>
+    {% for payment in payments %}
+      <p>Payment ID: <a href="{{ url_for('treasurer.paymentmonths', paymentId = payment['paymentId']) }}">{{ payment['paymentId'] }}</a> | {{ payment['amount'] }}, {{ payment['methodDescription'] }} paid {{ payment['month'] }}/{{ payment['year'] }}</p>
+    {% endfor %}
+  {% endif %}
+{% endblock %}

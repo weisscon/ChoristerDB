@@ -50,6 +50,10 @@ def reset_password():
                     'UPDATE account SET password = ? WHERE accountId = ?',
                     (generate_password_hash(new_password), g.user['accountId'],)
                 )
+                users.execute(
+                    'UPDATE account SET userset = \'1\' WHERE accountId=?',
+                    (g.user['accountId'],)
+                )
                 print('update completed')
                 users.commit()
                 flash('Password updated')
