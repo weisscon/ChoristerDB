@@ -24,6 +24,10 @@ def addpayment():
         method = request.form['methodId']
         amount = request.form['amount']
 
+        '''
+        validation = db.execute('SELECT choristerId FROM chorister WHERE )
+        '''
+
         try:
             db.execute(
                 'INSERT INTO payment (choristerId, methodId, amount) VALUES (?, ?, ?)',

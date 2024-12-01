@@ -24,18 +24,20 @@ def add_meeting():
     rehearsals = get_db()
 
     if request.method=="POST":
-        rehearsalId = request.form['rehearsalId']
         rehearsalDate = request.form['rehearsalDate']
+
+        print(rehearsalDate)
 
         try:
             rehearsals.execute(
-                'INSERT INTO rehearsal (rehearsalId, rehearsalDate)\
-                VALUES (?, ?)',
-                (rehearsalId, rehearsalDate)
+                'INSERT INTO rehearsal (rehearsalDate)\
+                VALUES (?)',
+                (rehearsalDate,)
             )
             rehearsals.commit()
             flash("New rehearsal added")
         except Exception as err:
             flash(err)
-    
-    return render_template('rehearsals/add_meeting.html')
+        return redirect(url_for('rehearsals.meetings'))
+
+    return render_template('rehearsals/add_meeting.html')    

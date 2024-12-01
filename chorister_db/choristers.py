@@ -52,6 +52,7 @@ def add_member():
             flash("New chorister added")
         except Exception as err:
             flash(err)
+        return redirect(url_for('choristers.members'))
 
     sections = choristers.execute("SELECT * FROM section").fetchall()
     statuses = choristers.execute("SELECT * FROM status").fetchall()
