@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Take Attendance{% endblock %}</h1>
+  <p><a href="{{ url_for('rehearsals.meetings') }}">Back</a></p>
+{% endblock %}
+
+{% block content %}
+  <p>{{ rehearsalDate['rehearsalDate'] }}</p>
+  <p>Take Attendance For:</p>
+  <form method="post">
+    <label for="section">Section</label>
+    <select name="section" id="section" required>
+        <option value="Soprano">Soprano</option>
+        <option value="Alto">Alto</option>
+        <option value="Tenor">Tenor</option>
+        <option value="Bass">Bass</option>
+    </select>
+    <input type="submit" name="" value="Choose Section">
+  </form>
+
+  {% if members %}
+    <form method="post">
+      <ul>
+        {% for member in members %}
+          <li>{{ member['firstName'] }} {{ member['lastName'] }} 
+            <select name="{{ member['choristerId'] }}">
+              {% for status in attendanceStatuses %}
+                <option value="[{{ status['attendanceId'] }}]">{{ status['attendanceStatus'] }}</option>
+              {% endfor %}
+            </select>
+          </li>
+        {% endfor %}
+      </ul>
+      <input type="submit" formaction="{{ url_for('rehearsals.takeattendance', rehearsalId=rehearsalId) }}" value="Submit Attendance">
+    </form>
+  {% endif %}
+
+{% endblock %}

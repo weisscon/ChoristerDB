@@ -41,3 +41,48 @@ def add_meeting():
         return redirect(url_for('rehearsals.meetings'))
 
     return render_template('rehearsals/add_meeting.html')    
+
+@bp.route('/startattendance/<int:rehearsalId>', methods=("GET","POST"))
+def startattendance(rehearsalId):
+    db = get_db()
+    rehearsalDate = db.execute(
+        'SELECT rehearsalDate FROM rehearsal WHERE rehearsalId = ?',
+        (rehearsalId,)
+    ).fetchone()
+    attendanceStatuses = db.execute(
+        'SELECT * FROM attendancestatus'
+    ).fetchall()
+    existing_data = db.execute(
+        'SELECT * FROM attends WHERE rehearsalId = ?',
+        (rehearsalId,)
+    ).fetchall()
+    if existing_data:
+        flash("Attendance has already been taken for this rehearsal.  Retaking attendance will overwrite previous data.")
+    if request.method == "POST":
+        if request.form['section'] == "Soprano":
+            section1 = 1
+            section2 = 2
+        elif request.form['section'] == "Alto":
+            section1 = 3
+            section2 = 4
+        elif request.form['section'] == "Tenor":
+            section1 = 5
+            section2 = 6
+        elif request.form['section'] == "Bass":
+            section1 = 7
+            section2 = 8
+        members = db.execute(
+            'SELECT * FROM chorister WHERE (sectionId = ? OR sectionId = ?) AND statusId = 1 ORDER BY chorister.lastName',
+            (section1, section2)
+        ).fetchall()
+
+        return render_template('rehearsals/take_attendance.html', rehearsalId=rehearsalId, attendanceStatuses = attendanceStatuses, rehearsalDate = rehearsalDate, members = members)
+    
+    return render_template('rehearsals/take_attendance.html', rehearsalId=rehearsalId, attendanceStatuses = attendanceStatuses, rehearsalDate = rehearsalDate, members = None)
+
+@bp.route('/takeattendance/<int:rehearsalId>', methods=("GET","POST"))
+def takeattendance(rehearsalId):
+    for entry in request.form.to_dict():
+        print(entry, request.form[entry][1])
+    print(request.form)
+    return redirect(url_for('rehearsals.meetings'))
