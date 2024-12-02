@@ -118,6 +118,20 @@ def add_user():
 
     return render_template('dbadmin/add_user.html')
 
+@bp.route('/delete_user', methods=('GET','POST'))
+def delete_user(userId):
+    users = get_users()
+
+    users.execute(
+        'DELETE FROM account WHERE username=?',
+        (userId,)
+    )
+    users.commit()
+    flash("The user has been deleted from the list of DB users")
+    
+    #return render_template('dbadmin/delete_user.html', userId = userId)
+    return redirect(url_for('dbadmin.user', userId = userId))
+
 @bp.route('/add_values')
 def add_values():
     db = get_db()

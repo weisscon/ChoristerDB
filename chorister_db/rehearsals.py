@@ -86,3 +86,14 @@ def takeattendance(rehearsalId):
         print(entry, request.form[entry][1])
     print(request.form)
     return redirect(url_for('rehearsals.meetings'))
+
+@bp.route('/reviewattendance/<int:rehearsalId>', methods=("GET","POST"))
+def reviewattendance(rehearsalId):
+    db = get_db()
+    attendees = db.execute(
+        'SELECT attends.choristerId, chorister.firstName, chorister.lastName\
+        FROM attends\
+        INNER JOIN chorister ON attends.choristerId = chorister.choristerId\
+        INNER JOIN rehearsal ON attends.rehearsalId=rehearsal.rehearsalId'
+    ).fetchall()
+    return redirect(url_for('rehearsals.meetings'))
