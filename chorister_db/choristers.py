@@ -70,3 +70,38 @@ def add_member():
             street2, city, state, zip, email, phone, sectionId, statusId) VALUES (' + value_statement + ')'
         print(insert_statement)
 '''
+
+@bp.route('/update_member/<choristerId>', methods=("GET","POST"))
+def update_member(choristerId):
+    db = get_db()
+    member = db.execute(
+        'SELECT c.choristerId, c.firstName, c.lastName, c.street1, c.street2, c.city, c.state, c.zip, c.email, c.phone, c.sectionId, c.statusId, section.sectionName, status.statusName'
+        ' FROM chorister as c JOIN status ON c.statusId = status.statusId JOIN section ON c.sectionId = section.sectionId'
+        ' WHERE c.choristerId = ?', (choristerId,)
+    ).fetchone()
+
+    sections = db.execute("SELECT * FROM section").fetchall()
+    statuses = db.execute("SELECT * FROM status").fetchall()
+
+    if request.method=="POST":
+        firstName = request.form['First Name']
+        lastName = request.form['Last Name']
+        street1 = request.form['Street Address 1']
+        street2 = request.form['Street Address 2']
+        city = request.form['City']
+        state = request.form['State']
+        zip = request.form['ZIP Code']
+        email = request.form['email']
+        phone = request.form['Phone number']
+        sectionId = request.form['Section ID']
+        statusId = request.form['Status ID']
+        db.execute(
+            'UPDATE chorister'
+            ' SET firstName = ?, lastName = ?, street1 = ?, street2 = ?, city = ?, state = ?, zip = ?, email = ?, phone = ?, sectionId = ?, statusId = ?'
+            ' WHERE choristerId = ?',
+            (firstName, lastName, street1, street2, city, state, zip, email, phone, sectionId, statusId, choristerId,)
+        )
+        db.commit()
+        return redirect(url_for('choristers.members'))
+
+    return render_template('/choristers/update_member.html', member=member, sections=sections, statuses=statuses)

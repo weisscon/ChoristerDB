@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Update Member: {{ member['choristerId'] }} {{ member['firstName'] }} {{ member['lastName'] }}{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        <label for="choristerId">Chorister Id</label>
+        <input name="choristerId" id="choristerId" value="{{ member['choristerId'] }}" disabled>
+        <label for="First Name">First Name</label>
+        <input name="First Name" id="First Name" value="{{ member['firstName'] }}" required>
+        <label for="Last Name">Last Name</label>
+        <input name="Last Name" id="Last Name" value="{{ member['lastName'] }}" required>
+        <label for="Street Address 1">Address 1</label>
+        <input name="Street Address 1" id="Street Address 1" value="{{ member['street1'] }}" required>
+        <label for="Street Address 2">Address 2</label>
+        <input name="Street Address 2" id="Street Address 2" value="{{ member['street2'] }}">
+        <label for="City">City</label>
+        <input name="City" id="City" value="{{ member['city'] }}" required>
+        <label for="State">State</label>
+        <input name="State" id="State" value="{{ member['state'] }}" required>
+        <label for="ZIP Code">ZIP Code</label>
+        <input name="ZIP Code" id="ZIP Code" value="{{ member['zip'] }}" required>
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" value="{{ member['email'] }}">
+        <label for="Phone number">Phone Number (no formatting)</label>
+        <input type="number" name="Phone number" id="Phone number" value="{{ member['phone'] }}">
+        <label for="Section ID">Section</label>
+        <select name="Section ID" id="Section ID">
+            {% for section in sections %}
+                <option {% if member['sectionId']==section['sectionId'] %} selected {% endif %} value="{{ section['sectionId'] }}">{{ section['sectionName'] }}</option>
+            {% endfor %}
+        </select>
+        <label for="Status ID">Status</label>
+        <select name="Status ID" id="Status ID">
+            {% for status in statuses %}
+                <option {% if member['statusId']==status['statusId'] %} selected {% endif %} value="{{ status['statusId'] }}">{{ status['statusName'] }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Update Chorister">
+    </form>
+{% endblock %}
