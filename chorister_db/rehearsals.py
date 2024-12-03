@@ -91,10 +91,13 @@ def takeattendance(rehearsalId):
 def reviewattendance(rehearsalId):
     db = get_db()
     attendees = db.execute(
-        'SELECT attends.choristerId, chorister.firstName, chorister.lastName\
+        'SELECT attends.choristerId, attendancestatus.attendanceStatus, chorister.firstName, chorister.lastName\
         FROM attends\
         LEFT JOIN chorister ON attends.choristerId = chorister.choristerId\
-        LEFT JOIN rehearsal ON attends.rehearsalId=rehearsal.rehearsalId'
+        LEFT JOIN rehearsal ON attends.rehearsalId=rehearsal.rehearsalId\
+        LEFT JOIN attendancestatus ON attends.attendanceId=attendancestatus.attendanceId\
+        WHERE attends.rehearsalId=?',
+        (rehearsalId,)
     ).fetchall()
     #return redirect(url_for('rehearsals.meetings'))
-    return render_template('rehearsals/review_attendance.html', rehearsalId=rehearsalId)
+    return render_template('rehearsals/review_attendance.html', attendees=attendees)

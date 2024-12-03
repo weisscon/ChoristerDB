@@ -6,6 +6,6 @@
 
 {% block content %}
   {% for attendee in attendees %}
-    <p>{{ attendee['choristerId'] }} {{ attendee['firstName'] }} {{ attendee['lastName'] }}</p>
+    <p>{{ attendee['choristerId'] }} {{ attendee['firstName'] }} {{ attendee['lastName'] }} {{ attendee['attendanceStatus'] }}</p>
   {% endfor %}
 {% endblock %}
