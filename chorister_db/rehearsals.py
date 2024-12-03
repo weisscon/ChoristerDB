@@ -93,7 +93,8 @@ def reviewattendance(rehearsalId):
     attendees = db.execute(
         'SELECT attends.choristerId, chorister.firstName, chorister.lastName\
         FROM attends\
-        INNER JOIN chorister ON attends.choristerId = chorister.choristerId\
-        INNER JOIN rehearsal ON attends.rehearsalId=rehearsal.rehearsalId'
+        LEFT JOIN chorister ON attends.choristerId = chorister.choristerId\
+        LEFT JOIN rehearsal ON attends.rehearsalId=rehearsal.rehearsalId'
     ).fetchall()
-    return redirect(url_for('rehearsals.meetings'))
+    #return redirect(url_for('rehearsals.meetings'))
+    return render_template('rehearsals/review_attendance.html', rehearsalId=rehearsalId)

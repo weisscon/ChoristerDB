@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Review Attendance{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  {% for attendee in attendees %}
+    <p>{{ attendee['choristerId'] }} {{ attendee['firstName'] }} {{ attendee['lastName'] }}</p>
+  {% endfor %}
+{% endblock %}
