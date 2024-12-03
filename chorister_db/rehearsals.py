@@ -14,7 +14,7 @@ bp = Blueprint('rehearsals', __name__, url_prefix='/rehearsals')
 def meetings():
     rehearsals = get_db()
     rehearsal = rehearsals.execute(
-        'SELECT * FROM rehearsal'
+        'SELECT * FROM rehearsal ORDER BY rehearsalId DESC'
     ).fetchall()
 
     return render_template('rehearsals/meetings.html', rehearsal=rehearsal)
@@ -52,12 +52,6 @@ def startattendance(rehearsalId):
     attendanceStatuses = db.execute(
         'SELECT * FROM attendancestatus'
     ).fetchall()
-    existing_data = db.execute(
-        'SELECT * FROM attends WHERE rehearsalId = ?',
-        (rehearsalId,)
-    ).fetchall()
-    if existing_data:
-        flash("Attendance has already been taken for this rehearsal.  Retaking attendance will overwrite previous data.")
     if request.method == "POST":
         if request.form['section'] == "Soprano":
             section1 = 1
@@ -75,6 +69,15 @@ def startattendance(rehearsalId):
             'SELECT * FROM chorister WHERE (sectionId = ? OR sectionId = ?) AND statusId = 1 ORDER BY chorister.lastName',
             (section1, section2)
         ).fetchall()
+        existing_data = db.execute(
+            'SELECT attends.choristerId '
+            ' FROM attends JOIN chorister ON attends.choristerId = chorister.choristerId'
+            ' WHERE attends.rehearsalId = ?' 
+            ' AND (chorister.sectionId = ? OR chorister.sectionId = ?)',
+            (rehearsalId, section1, section2,)
+        ).fetchall()
+        if existing_data:
+            flash("Attendance has already been taken for this section for this rehearsal.  Retaking attendance will overwrite previous data.")
 
         return render_template('rehearsals/take_attendance.html', rehearsalId=rehearsalId, attendanceStatuses = attendanceStatuses, rehearsalDate = rehearsalDate, members = members)
     
@@ -82,16 +85,20 @@ def startattendance(rehearsalId):
 
 @bp.route('/takeattendance/<int:rehearsalId>', methods=("GET","POST"))
 def takeattendance(rehearsalId):
+    db = get_db()
     for entry in request.form.to_dict():
-        print(entry, request.form[entry][1])
-    print(request.form)
+        db.execute(
+            'INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES (?, ?, ?)',
+            (entry, rehearsalId, request.form[entry][1],)
+        )
+    db.commit()
     return redirect(url_for('rehearsals.meetings'))
 
 @bp.route('/reviewattendance/<int:rehearsalId>', methods=("GET","POST"))
 def reviewattendance(rehearsalId):
     db = get_db()
     attendees = db.execute(
-        'SELECT attends.choristerId, attendancestatus.attendanceStatus, chorister.firstName, chorister.lastName\
+        'SELECT attends.choristerId, attends.attendanceId, attendancestatus.attendanceStatus, chorister.firstName, chorister.lastName\
         FROM attends\
         LEFT JOIN chorister ON attends.choristerId = chorister.choristerId\
         LEFT JOIN rehearsal ON attends.rehearsalId=rehearsal.rehearsalId\
@@ -99,5 +106,43 @@ def reviewattendance(rehearsalId):
         WHERE attends.rehearsalId=?',
         (rehearsalId,)
     ).fetchall()
+    statuses = db.execute(
+        'SELECT * FROM attendancestatus'
+    ).fetchall()
+    rehearsalDate = db.execute(
+        'SELECT rehearsalDate FROM rehearsal WHERE rehearsalId = ?', (rehearsalId,)
+    ).fetchone()
     #return redirect(url_for('rehearsals.meetings'))
-    return render_template('rehearsals/review_attendance.html', attendees=attendees)
+    return render_template('rehearsals/review_attendance.html', attendees=attendees, statuses=statuses, rehearsalId=rehearsalId, rehearsalDate=rehearsalDate)
+
+
+@bp.route('/updateattendance/<int:rehearsalId>', methods=("GET","POST"))
+def updateattendance(rehearsalId):
+    db = get_db()
+    db.execute(
+        'UPDATE attends'
+        ' SET attendanceId = ?'
+        ' WHERE rehearsalId = ? AND choristerId = ?',
+        (request.form['statusId'], rehearsalId, request.form['ctrl'],)
+    )
+    db.commit()
+    
+    return redirect(url_for('rehearsals.reviewattendance', rehearsalId=rehearsalId))
+
+@bp.route('/addattendance/<int:rehearsalId>', methods=("GET","POST"))
+def addattendance(rehearsalId):
+    print(request.form['choristerId'])
+    db = get_db()
+    chorister = db.execute(
+        'SELECT choristerId from chorister WHERE choristerId = ?', (request.form['choristerId'],)
+    ).fetchone()
+    if chorister:
+        db.execute(
+            'INSERT INTO attends(choristerId, rehearsalId, attendanceId) VALUES (?, ?, ?)',
+            (request.form['choristerId'], rehearsalId, request.form['statusId'])
+        )
+        db.commit()
+    else:
+        flash("Entered ID does not match any existing chorister.")
+
+    return redirect(url_for('rehearsals.reviewattendance', rehearsalId=rehearsalId))

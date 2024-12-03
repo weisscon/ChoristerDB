@@ -75,33 +75,36 @@ def paymentmonths(paymentId):
     db = get_db()
 
     if request.method == "POST":
-        monthId = db.execute('SELECT monthId from month WHERE month = ? AND year = ?', (request.form['month'], request.form['year'],)).fetchone()
-        while not monthId:
-            prev_max = db.execute('SELECT * from month ORDER BY monthId DESC LIMIT 1').fetchone()
-            next_month = prev_max['month']+1
-            next_year = prev_max['year']
-            if next_month > 12: 
-                next_month = next_month - 12
-                next_year = next_year + 1
+        if not(1<=request.form['month']<=12) or request.form['year']<2024:
+            flash("month or date invalid")
+        else:    
+            monthId = db.execute('SELECT monthId from month WHERE month = ? AND year = ?', (request.form['month'], request.form['year'],)).fetchone()
+            while not monthId:
+                prev_max = db.execute('SELECT * from month ORDER BY monthId DESC LIMIT 1').fetchone()
+                next_month = prev_max['month']+1
+                next_year = prev_max['year']
+                if next_month > 12: 
+                    next_month = next_month - 12
+                    next_year = next_year + 1
+                try:
+                    db.execute(
+                        'INSERT INTO month(month, year) VALUES (?, ?)',
+                        (next_month, next_year,)
+                    )
+                    db.commit()
+                except Exception:
+                    flash("Fatal Month Error")
+                    break
+                monthId = db.execute('SELECT monthId from month WHERE month = ? AND year = ?', (request.form['month'], request.form['year'],)).fetchone()
             try:
                 db.execute(
-                    'INSERT INTO month(month, year) VALUES (?, ?)',
-                    (next_month, next_year,)
+                    'INSERT INTO paymentmonth(paymentId, monthId) VALUES (?, ?)',
+                    (paymentId, monthId['monthId'],)
                 )
                 db.commit()
-            except Exception:
-                flash("Fatal Month Error")
-                break
-            monthId = db.execute('SELECT monthId from month WHERE month = ? AND year = ?', (request.form['month'], request.form['year'],)).fetchone()
-        try:
-            db.execute(
-                'INSERT INTO paymentmonth(paymentId, monthId) VALUES (?, ?)',
-                (paymentId, monthId['monthId'],)
-            )
-            db.commit()
-            flash("Payment applied to month")
-        except Exception as error:
-            flash(error)
+                flash("Payment applied to month")
+            except Exception as error:
+                flash(error)
         
     paymonths = db.execute(
         'SELECT p.paymentId, p.choristerId, p.amount, pm.methodDescription, m.month, m.year'

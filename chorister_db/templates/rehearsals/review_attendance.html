@@ -1,11 +1,35 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Review Attendance{% endblock %}</h1>
+  <h1>{% block title %}Review Attendance: {{ rehearsalDate['rehearsalDate'] }}{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
   {% for attendee in attendees %}
-    <p>{{ attendee['choristerId'] }} {{ attendee['firstName'] }} {{ attendee['lastName'] }} {{ attendee['attendanceStatus'] }}</p>
+    <div style="display: flex;">
+      {{ attendee['choristerId'] }} {{ attendee['firstName'] }} {{ attendee['lastName'] }} 
+      <form method="post">
+        <input type="hidden" id="ctrl" name="ctrl" value="{{ attendee['choristerId'] }}">
+        <select name="statusId" id="statusId">
+          {% for status in statuses %}   
+            <option {% if attendee['attendanceStatus']==status['attendanceStatus'] %} selected {% endif %} value="{{status['attendanceId']}}">{{ status['attendanceStatus'] }}</option>
+          {% endfor %}
+        </select>
+        <input type="submit" formaction="{{ url_for('rehearsals.updateattendance', rehearsalId=rehearsalId) }}" value="Update Attendance">
+      </form>
+    </div>
   {% endfor %}
+
+  <div style="display: flex;">
+    <form method="post">
+      <label for="choristerId">Chorister ID</label>
+      <input id="choristerId" name="choristerId">
+      <select name="statusId" id="statusId">
+        {% for status in statuses %}
+          <option value="[{{ status['attendanceId'] }}]">{{ status['attendanceStatus'] }}</option>
+        {% endfor %}
+      </select>
+      <input type="submit" formaction="{{ url_for('rehearsals.addattendance', rehearsalId=rehearsalId) }}" value="Add a chorister">
+    </form>
+  </div>
 {% endblock %}
