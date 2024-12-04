@@ -22,7 +22,7 @@
   {% if payments %}
     <p>Payments</p>
     {% for payment in payments %}
-      <p>Payment ID: <a href="{{ url_for('treasurer.paymentmonths', paymentId = payment['paymentId']) }}">{{ payment['paymentId'] }}</a> | {{ payment['amount'] }}, {{ payment['methodDescription'] }} paid {{ payment['month'] }}/{{ payment['year'] }}</p>
+      <p>Payment ID: <a href="{{ url_for('treasurer.paymentmonths', paymentId = payment['paymentId']) }}">{{ payment['paymentId'] }}</a> | {{ payment['amount'] }}, {{ payment['methodDescription'] }} pays {{ payment['monthCount'] }} months</p>
     {% endfor %}
   {% endif %}
 {% endblock %}

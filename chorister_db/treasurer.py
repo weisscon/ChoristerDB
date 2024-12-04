@@ -24,26 +24,31 @@ def addpayment():
         method = request.form['methodId']
         amount = request.form['amount']
 
-        '''
-        validation = db.execute('SELECT choristerId FROM chorister WHERE )
-        '''
-
-        try:
-            db.execute(
-                'INSERT INTO payment (choristerId, methodId, amount) VALUES (?, ?, ?)',
-                (chorId, method, amount,)
-            )
-            db.commit()
-            flash("Payment added.")
-        except Exception as error:
-            flash(error)
+        
+        validation = db.execute('SELECT choristerId FROM chorister WHERE choristerId = ?',(chorId,)).fetchone()
+        if validation:
+            try:
+                db.execute(
+                    'INSERT INTO payment (choristerId, methodId, amount) VALUES (?, ?, ?)',
+                    (chorId, method, amount,)
+                )
+                db.commit()
+                flash("Payment added.")
+            except Exception as error:
+                flash(error)
+        else:
+            flash("Entered ID does not match any existing chorister.")
     
     return render_template('treasurer/addpayment.html', methods = methods)
 
 @bp.route('/reviewmember', methods=("GET","POST"))
 def reviewmemberlanding():
     if request.method=="POST":
-        return redirect(url_for("treasurer.reviewmember", choristerId = request.form['choristerId']))
+        db = get_db()
+        validation = db.execute('SELECT choristerId FROM chorister WHERE choristerId = ?',(request.form['choristerId'],)).fetchone()
+        if validation:
+            return redirect(url_for("treasurer.reviewmember", choristerId = request.form['choristerId']))
+        else: flash("Entered ID does not match any existing chorister")
     return render_template('treasurer/reviewmember.html', member = None, payments = None)
 
 @bp.route('/<choristerId>/reviewmember')
@@ -60,11 +65,11 @@ def reviewmember(choristerId):
     ).fetchone()
 
     payments = db.execute(
-        'SELECT p.paymentId, p.amount, pm.methodDescription, m.month, m.year'
+        'SELECT p.paymentId, p.amount, pm.methodDescription, COUNT(m.monthId) AS monthCount'
         ' FROM payment as p JOIN paymentmethod as pm ON p.methodId = pm.methodId'
         ' LEFT JOIN paymentmonth ON p.paymentId = paymentmonth.paymentId'
         ' LEFT JOIN month as m on paymentmonth.monthId =m.monthId'
-        ' WHERE p.choristerId = ?',
+        ' WHERE p.choristerId = ? GROUP BY p.paymentId',
         (choristerId,)
     ).fetchall()
 
@@ -75,7 +80,7 @@ def paymentmonths(paymentId):
     db = get_db()
 
     if request.method == "POST":
-        if not(1<=request.form['month']<=12) or request.form['year']<2024:
+        if not(1<=int(request.form['month'])<=12) or int(request.form['year'])<2024:
             flash("month or date invalid")
         else:    
             monthId = db.execute('SELECT monthId from month WHERE month = ? AND year = ?', (request.form['month'], request.form['year'],)).fetchone()
@@ -105,17 +110,33 @@ def paymentmonths(paymentId):
                 flash("Payment applied to month")
             except Exception as error:
                 flash(error)
-        
+
+    payinfo = db.execute(
+        'SELECT c.choristerId, c.firstName, c.lastName, p.paymentId, p.amount, pm.methodDescription'
+        ' FROM chorister as c JOIN payment as p ON c.choristerId = p.choristerId'
+        ' JOIN paymentmethod as pm ON p.methodId = pm.methodId'
+        ' WHERE p.paymentId = ?', (paymentId,)
+    ).fetchone()
     paymonths = db.execute(
-        'SELECT p.paymentId, p.choristerId, p.amount, pm.methodDescription, m.month, m.year'
-        ' FROM payment as p JOIN paymentmethod as pm ON p.methodId = pm.methodId'
-        ' LEFT JOIN paymentmonth ON p.paymentId = paymentmonth.paymentId'
-        ' JOIN month as m on paymentmonth.monthId =m.monthId'
-        ' WHERE p.paymentId = ?',
+        'SELECT m.monthId, m.month, m.year'
+        ' FROM month as m JOIN paymentmonth as pm ON m.monthId = pm.monthId'
+        ' WHERE pm.paymentId = ?',
         (paymentId,)
     ).fetchall()
     
-    return render_template('treasurer/paymentmonths.html', paymonths = paymonths)
+    return render_template('treasurer/paymentmonths.html', payinfo = payinfo, paymonths = paymonths)
+
+@bp.route('/removemonths', methods=("GET","POST"))
+def removemonths():
+    if request.method == 'POST':
+        db = get_db()
+        db.execute(
+            'DELETE FROM paymentmonth WHERE paymentId = ? and monthId = ?', (request.form['paymentId'], request.form['monthId'])
+        )
+        db.commit()
+    
+    return redirect(url_for('treasurer.paymentmonths', paymentId=request.form['paymentId']))
+
 
 @bp.route('/reviewmonth', methods=("GET","POST"))
 def reviewmonthlanding():
@@ -134,11 +155,13 @@ def reviewmonth(monthId):
     db = get_db()
 
     payments = db.execute(
-        'SELECT p.paymentId, c.choristerId, c.firstName, c.lastName, p.amount, pm.methodDescription'
-        ' FROM payment as p, chorister as c, paymentmethod as pm, paymentmonth'
+        'SELECT p.paymentId, c.choristerId, c.firstName, c.lastName, p.amount, pm.methodDescription, mc.countMonth'
+        ' FROM payment as p, chorister as c, paymentmethod as pm, paymentmonth,'
+        '  (SELECT paymentId, COUNT(monthId) AS countMonth FROM paymentmonth GROUP BY paymentId) AS mc'
         ' WHERE p.choristerId = c.choristerId'
         ' AND p.methodId = pm.methodId'
         ' AND p.paymentId = paymentmonth.paymentId'
+        ' AND mc.paymentId = p.paymentId'
         ' AND paymentmonth.monthId = ?'
         ' ORDER BY c.lastName',
         (monthId,)

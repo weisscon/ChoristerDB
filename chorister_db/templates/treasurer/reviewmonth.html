@@ -15,7 +15,7 @@
   {% if payments %}
     <p>Payments</p>
     {% for payment in payments %}
-      <p><a href="{{ url_for('treasurer.reviewmember', choristerId = payment['choristerId']) }}">{{ payment['choristerId'] }}</a> {{ payment['firstName'] }} {{ payment['lastName'] }} Payment ID: <a href="{{ url_for('treasurer.paymentmonths', paymentId = payment['paymentId']) }}">{{ payment['paymentId'] }}</a> | ${{ payment['amount'] }}, {{ payment['methodDescription'] }}</p>
+      <p><a href="{{ url_for('treasurer.reviewmember', choristerId = payment['choristerId']) }}">{{ payment['choristerId'] }}</a> {{ payment['firstName'] }} {{ payment['lastName'] }} Payment ID: <a href="{{ url_for('treasurer.paymentmonths', paymentId = payment['paymentId']) }}">{{ payment['paymentId'] }}</a> | {{ payment['amount'] }}, {{ payment['methodDescription'] }} (payment covers {{ payment['countMonth'] }} month{% if payment['countMonth']>1 %}s{% endif %} in total)</p>
     {% endfor %}
   {% endif %}
 {% endblock %}
