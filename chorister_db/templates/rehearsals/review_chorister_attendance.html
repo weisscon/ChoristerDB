@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Review Chorister's Attendance{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <p>Rehearsal ID | Date | Status |</p>
+  {% for meeting in meetings_attended %}
+    <p>{{ meeting['rehearsalId'] }} | <a href="{{ url_for('rehearsals.reviewattendance', rehearsalId=meeting['rehearsalId']) }}">{{ meeting['rehearsalDate'] }} </a>| {{ meeting['attendanceStatus'] }} </p>
+  {% endfor %}
+{% endblock %}

@@ -146,3 +146,18 @@ def addattendance(rehearsalId):
         flash("Entered ID does not match any existing chorister.")
 
     return redirect(url_for('rehearsals.reviewattendance', rehearsalId=rehearsalId))
+
+@bp.route('/<choristerId>/reviewchoristerattendance', methods=("GET","POST"))
+def reviewchoristerattendance(choristerId):
+    db = get_db()
+    meetings_attended = db.execute(
+        'SELECT rehearsal.rehearsalId, rehearsal.rehearsalDate,\
+        attendancestatus.attendanceStatus\
+        FROM rehearsal\
+        LEFT JOIN attends ON rehearsal.rehearsalId=attends.rehearsalId\
+        LEFT JOIN attendancestatus ON attends.attendanceId=attendancestatus.attendanceId\
+        WHERE attends.choristerId=?',
+        (choristerId,)
+    ).fetchall()
+
+    return render_template('rehearsals/review_chorister_attendance.html', choristerId=choristerId, meetings_attended=meetings_attended)

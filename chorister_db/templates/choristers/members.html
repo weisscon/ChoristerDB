@@ -9,6 +9,7 @@
   {% for singer in chorister %}
     <p><a href="{{ url_for('choristers.update_member', choristerId = singer['choristerId']) }}">{{ singer['choristerId'] }}</a> | {{ singer['firstName'] }} | {{ singer['lastName'] }} | {{ singer['street1'] }} |
        {{ singer['street2'] }} | {{ singer['city'] }} | {{ singer['state'] }} | {{ singer['zip'] }} | {{ singer['email'] }} | 
-       {{ singer['phone'] }} | {{ singer['sectionName'] }} | {{ singer['statusName'] }} |</p>
+       {{ singer['phone'] }} | {{ singer['sectionName'] }} | {{ singer['statusName'] }} |
+        <button><a href="{{ url_for('rehearsals.reviewchoristerattendance', choristerId = singer['choristerId']) }}">View Meeting Attendance</a></button> |</p>
   {% endfor %}
 {% endblock %}
