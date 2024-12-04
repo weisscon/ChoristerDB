@@ -7,15 +7,16 @@
 
 {% block content %}
   <p>USER: {{ user['username'] }}</p>
-  <ul>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; column-gap: 1rem; row-gap: .5rem; width: fit-content;">
     {% for permission in permissions %}
-      <li>{{ permission[1] }} 
+      <div>{{ permission[1] }} </div>
+      <div>
         {% if permission[2] == 1 %} 
           <button><a href="{{ url_for('dbadmin.remove_permission', permissionId = permission[0], userId = user['accountId']) }}">Remove</a></button>
         {% else %}
           <button><a href="{{ url_for('dbadmin.add_permission', permissionId = permission[0], userId = user['accountId']) }}">Add</a></button>
         {% endif %}
-      </li>
+      </div>
     {% endfor %}
-  </ul>
+  </div>
 {% endblock %}

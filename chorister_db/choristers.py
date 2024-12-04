@@ -19,7 +19,8 @@ def members():
         chorister.zip, chorister.email, chorister.phone, chorister.sectionId,\
         chorister.statusId, section.sectionName, status.statusName FROM \
         chorister INNER JOIN section ON chorister.sectionId = section.sectionId \
-        INNER JOIN status ON chorister.statusId=status.statusId'
+        INNER JOIN status ON chorister.statusId=status.statusId \
+        ORDER BY chorister.sectionId, chorister.lastName'
     ).fetchall()
 
     return render_template('choristers/members.html', chorister=chorister)

@@ -5,11 +5,14 @@
 {% endblock %}
 
 {% block content %}
-  {% for user in users %}
-    <p>{{ user['username'] }} <button><a href="{{ url_for('dbadmin.reset_forgot', userId = user['accountId']) }}">Reset Forgotten Password</a></button> 
-      <button><a href="{{ url_for('dbadmin.set_permissions', userId = user['accountId']) }}">Set Permissions</a></button>
-      <button><a href="{{ url_for('dbadmin.delete_user', userId = user['accountId']) }}">Delete User</a></button></p>
-  {% endfor %}
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+    <div><h2>Username</h2></div><div><h2>Actions</h2></div>
+    {% for user in users %}
+      <div>{{ user['username'] }}</div><div> <button><a href="{{ url_for('dbadmin.reset_forgot', userId = user['accountId']) }}">Reset Forgotten Password</a></button> 
+        <button><a href="{{ url_for('dbadmin.set_permissions', userId = user['accountId']) }}">Set Permissions</a></button>
+        <button><a href="{{ url_for('dbadmin.delete_user', userId = user['accountId']) }}">Delete User</a></button></div>
+    {% endfor %}
+  </div>
 
   <hr></hr>
   <a href="{{ url_for('dbadmin.add_user') }}">Add New Database User</a>

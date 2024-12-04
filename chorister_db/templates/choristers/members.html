@@ -5,11 +5,18 @@
 {% endblock %}
 
 {% block content %}
-  <p>Chorister ID | First Name | Last Name | Address 1 | Address 2 | City | State | Zipcode | Email | Phone | Section | Status |</p>
-  {% for singer in chorister %}
-    <p><a href="{{ url_for('choristers.update_member', choristerId = singer['choristerId']) }}">{{ singer['choristerId'] }}</a> | {{ singer['firstName'] }} | {{ singer['lastName'] }} | {{ singer['street1'] }} |
-       {{ singer['street2'] }} | {{ singer['city'] }} | {{ singer['state'] }} | {{ singer['zip'] }} | {{ singer['email'] }} | 
-       {{ singer['phone'] }} | {{ singer['sectionName'] }} | {{ singer['statusName'] }} |
-        <button><a href="{{ url_for('rehearsals.reviewchoristerattendance', choristerId = singer['choristerId']) }}">View Meeting Attendance</a></button> |</p>
-  {% endfor %}
+  <table>
+    <thead>
+    <tr><th>Chorister ID</th><th>First Name</th><th>Last Name</th><th>Address 1</th><th>Address 2</th><th>City</th><th>State</th><th>Zip</th><th>Email</th><th>Phone</th><th>Section</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+    {% for singer in chorister %}
+      <tr><td><a href="{{ url_for('choristers.update_member', choristerId = singer['choristerId']) }}">{{ singer['choristerId'] }}</a></td><td>{{ singer['firstName'] }}</td><td>{{ singer['lastName'] }}</td><td>{{ singer['street1'] }}</td>
+        <td>{{ singer['street2'] }}</td><td>{{ singer['city'] }}</td><td>{{ singer['state'] }}</td><td>{{ singer['zip'] }}</td><td>{{ singer['email'] }}</td>
+        <td>{{ singer['phone'] }}</td><td>{{ singer['sectionName'] }}</td><td>{{ singer['statusName'] }}</td>
+          <!-- <button><a href="{{ url_for('rehearsals.reviewchoristerattendance', choristerId = singer['choristerId']) }}">View Meeting Attendance</a></button> |</p> -->
+      </tr>
+    {% endfor %}
+  </tbody>
+  </table>
 {% endblock %}

@@ -5,8 +5,10 @@
 {% endblock %}
 
 {% block content %}
-  <p>Rehearsal ID | Date |</p>
+<table>
+  <thead><tr><th>Rehearsal ID</th><th>Date</th><th>Take Attendance</th></tr></thead>
   {% for meeting in rehearsal %}
-    <p>{{ meeting['rehearsalId'] }} | <a href="{{ url_for('rehearsals.reviewattendance', rehearsalId=meeting['rehearsalId']) }}">{{ meeting['rehearsalDate'] }} </a>| <button><a href="{{ url_for('rehearsals.startattendance', rehearsalId = meeting['rehearsalId']) }}">Take Attendance</a></button></p>
+    <tr><td>{{ meeting['rehearsalId'] }}</td><td><a href="{{ url_for('rehearsals.reviewattendance', rehearsalId=meeting['rehearsalId']) }}">{{ meeting['rehearsalDate'] }} </a></td><td><button><a href="{{ url_for('rehearsals.startattendance', rehearsalId = meeting['rehearsalId']) }}">Take Attendance</a></button></td></tr>
   {% endfor %}
+</table>
 {% endblock %}
