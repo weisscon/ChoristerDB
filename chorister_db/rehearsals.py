@@ -150,6 +150,12 @@ def addattendance(rehearsalId):
 @bp.route('/<choristerId>/reviewchoristerattendance', methods=("GET","POST"))
 def reviewchoristerattendance(choristerId):
     db = get_db()
+
+    member = db.execute(
+        'SELECT * FROM chorister WHERE choristerId = ?',
+        (choristerId,)
+    ).fetchone()
+
     meetings_attended = db.execute(
         'SELECT rehearsal.rehearsalId, rehearsal.rehearsalDate,\
         attendancestatus.attendanceStatus\
@@ -160,4 +166,4 @@ def reviewchoristerattendance(choristerId):
         (choristerId,)
     ).fetchall()
 
-    return render_template('rehearsals/review_chorister_attendance.html', choristerId=choristerId, meetings_attended=meetings_attended)
+    return render_template('rehearsals/review_chorister_attendance.html', choristerId=choristerId, meetings_attended=meetings_attended, member=member)
