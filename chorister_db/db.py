@@ -26,6 +26,11 @@ def init_db_command():
     init_users()
     click.echo('Initialized admin accounts.')
 
+@click.command('admin-reset')
+def admin_reset_command():
+    '''Clear only the admin accounts and reset'''
+    init_users()
+    click.echo('Reset Admin Accounts.')
 
 sqlite3.register_converter(
     "timestamp", lambda v: datetime.fromisoformat(v.decode())
@@ -34,6 +39,7 @@ sqlite3.register_converter(
 def init_app(app):
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
+    app.cli.add_command(admin_reset_command)
 
 def get_db():
     if 'db' not in g:

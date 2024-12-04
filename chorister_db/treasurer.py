@@ -5,13 +5,14 @@ from werkzeug.exceptions import abort
 
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from chorister_db.auth import login_required
+from chorister_db.auth import login_required, treasurer_required
 from chorister_db.db import get_db
-from chorister_db.db import get_users
 
 bp = Blueprint('treasurer', __name__, url_prefix="/treasurer")
 
 @bp.route('/addpayment', methods=("GET","POST"))
+@login_required
+@treasurer_required
 def addpayment():
     db = get_db()
 
@@ -42,6 +43,8 @@ def addpayment():
     return render_template('treasurer/addpayment.html', methods = methods)
 
 @bp.route('/reviewmember', methods=("GET","POST"))
+@login_required
+@treasurer_required
 def reviewmemberlanding():
     if request.method=="POST":
         db = get_db()
@@ -52,6 +55,8 @@ def reviewmemberlanding():
     return render_template('treasurer/reviewmember.html', member = None, payments = None)
 
 @bp.route('/<choristerId>/reviewmember')
+@login_required
+@treasurer_required
 def reviewmember(choristerId):
     
     member = None
@@ -76,6 +81,8 @@ def reviewmember(choristerId):
     return render_template('treasurer/reviewmember.html', member = member, payments = payments)
 
 @bp.route('/paymentmonths/<int:paymentId>', methods=("GET", "POST"))
+@login_required
+@treasurer_required
 def paymentmonths(paymentId):
     db = get_db()
 
@@ -127,6 +134,8 @@ def paymentmonths(paymentId):
     return render_template('treasurer/paymentmonths.html', payinfo = payinfo, paymonths = paymonths)
 
 @bp.route('/removemonths', methods=("GET","POST"))
+@login_required
+@treasurer_required
 def removemonths():
     if request.method == 'POST':
         db = get_db()
@@ -139,6 +148,8 @@ def removemonths():
 
 
 @bp.route('/reviewmonth', methods=("GET","POST"))
+@login_required
+@treasurer_required
 def reviewmonthlanding():
     if request.method == 'POST':
         db = get_db()
@@ -151,6 +162,8 @@ def reviewmonthlanding():
     return render_template('treasurer/reviewmonth.html', payments = None)
 
 @bp.route('/<int:monthId>/reviewmonth')
+@login_required
+@treasurer_required
 def reviewmonth(monthId):
     db = get_db()
 

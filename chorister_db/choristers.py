@@ -7,10 +7,13 @@ from flask import (
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from chorister_db.db import get_db
+from chorister_db.auth import login_required, choradmin_required
 
 bp = Blueprint('choristers', __name__, url_prefix='/choristers')
 
 @bp.route('/members', methods=('GET', 'POST'))
+@login_required
+@choradmin_required
 def members():
     choristers = get_db()
     chorister = choristers.execute(
@@ -26,6 +29,8 @@ def members():
     return render_template('choristers/members.html', chorister=chorister)
 
 @bp.route('/add_member', methods=('GET', 'POST'))
+@login_required
+@choradmin_required
 def add_member():
 
     choristers = get_db()
@@ -73,6 +78,8 @@ def add_member():
 '''
 
 @bp.route('/update_member/<choristerId>', methods=("GET","POST"))
+@login_required
+@choradmin_required
 def update_member(choristerId):
     db = get_db()
     member = db.execute(

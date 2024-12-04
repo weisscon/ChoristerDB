@@ -6,10 +6,10 @@
 
 {% block content %}
 <table>
-  <thead><tr><th>Chorister ID</th><th>Chorister Name</th><th>Attendance Status</th><th>Update</th></tr></thead>
+  <thead><tr><th>Chorister ID</th><th>Chorister Name</th><th>Section</th><th>Attendance Status</th><th>Update</th></tr></thead>
   <tbody>
   {% for attendee in attendees %}
-      <tr><td>{{ attendee['choristerId'] }}</td><td> {{ attendee['firstName'] }} {{ attendee['lastName'] }}</td> 
+      <tr><td><a href="{{url_for('rehearsals.reviewchoristerattendance', choristerId=attendee['choristerId'])}}">{{ attendee['choristerId'] }}</a></td><td> {{ attendee['firstName'] }} {{ attendee['lastName'] }}</td><td>{{ attendee['sectionName'] }}</td> 
       <td><form method="post" style="margin: 0%;">
         <input type="hidden" id="ctrl" name="ctrl" value="{{ attendee['choristerId'] }}">
         <select name="statusId" id="statusId">

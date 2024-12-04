@@ -59,3 +59,65 @@ def login_required(view):
         return view(**kwargs)
 
     return wrapped_view
+
+def dbadmin_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        permissions = get_users().execute(
+            'SELECT * FROM allowed WHERE permissionId = 1 AND accountId = ?',
+            (g.user['accountId'],)
+        ).fetchone()
+        if permissions is None:
+            flash("You do not have permission to view this page.")
+            return redirect(url_for('general.index'))
+    
+        return view(**kwargs)
+    
+    return wrapped_view
+
+def choradmin_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        permissions = get_users().execute(
+            'SELECT * FROM allowed WHERE permissionId = 2 AND accountId = ?',
+            (g.user['accountId'],)
+        ).fetchone()
+        if permissions is None:
+            flash("You do not have permission to view this page.")
+            return redirect(url_for('general.index'))
+    
+        return view(**kwargs)
+    
+    return wrapped_view
+
+def attendadmin_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        permissions = get_users().execute(
+            'SELECT * FROM allowed WHERE permissionId = 3 AND accountId = ?',
+            (g.user['accountId'],)
+        ).fetchone()
+        if permissions is None:
+            flash("You do not have permission to view this page.")
+            return redirect(url_for('general.index'))
+    
+        return view(**kwargs)
+    
+    return wrapped_view
+
+def treasurer_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        permissions = get_users().execute(
+            'SELECT * FROM allowed WHERE permissionId = 4 AND accountId = ?',
+            (g.user['accountId'],)
+        ).fetchone()
+        if permissions is None:
+            flash("You do not have permission to view this page.")
+            return redirect(url_for('general.index'))
+    
+        return view(**kwargs)
+    
+    return wrapped_view
+
+    

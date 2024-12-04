@@ -7,10 +7,13 @@ from flask import (
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from chorister_db.db import get_db
+from chorister_db.auth import login_required, attendadmin_required
 
 bp = Blueprint('rehearsals', __name__, url_prefix='/rehearsals')
 
 @bp.route('/meetings', methods=('GET', 'POST'))
+@login_required
+@attendadmin_required
 def meetings():
     rehearsals = get_db()
     rehearsal = rehearsals.execute(
@@ -20,6 +23,8 @@ def meetings():
     return render_template('rehearsals/meetings.html', rehearsal=rehearsal)
 
 @bp.route('/add_meeting', methods=('GET', 'POST'))
+@login_required
+@attendadmin_required
 def add_meeting():
     rehearsals = get_db()
 
@@ -43,6 +48,8 @@ def add_meeting():
     return render_template('rehearsals/add_meeting.html')    
 
 @bp.route('/startattendance/<int:rehearsalId>', methods=("GET","POST"))
+@login_required
+@attendadmin_required
 def startattendance(rehearsalId):
     db = get_db()
     rehearsalDate = db.execute(
@@ -84,6 +91,8 @@ def startattendance(rehearsalId):
     return render_template('rehearsals/take_attendance.html', rehearsalId=rehearsalId, attendanceStatuses = attendanceStatuses, rehearsalDate = rehearsalDate, members = None)
 
 @bp.route('/takeattendance/<int:rehearsalId>', methods=("GET","POST"))
+@login_required
+@attendadmin_required
 def takeattendance(rehearsalId):
     db = get_db()
     for entry in request.form.to_dict():
@@ -95,15 +104,18 @@ def takeattendance(rehearsalId):
     return redirect(url_for('rehearsals.meetings'))
 
 @bp.route('/reviewattendance/<int:rehearsalId>', methods=("GET","POST"))
+@login_required
+@attendadmin_required
 def reviewattendance(rehearsalId):
     db = get_db()
     attendees = db.execute(
-        'SELECT attends.choristerId, attends.attendanceId, attendancestatus.attendanceStatus, chorister.firstName, chorister.lastName\
+        'SELECT attends.choristerId, attends.attendanceId, attendancestatus.attendanceStatus, chorister.firstName, chorister.lastName, section.sectionName\
         FROM attends\
         LEFT JOIN chorister ON attends.choristerId = chorister.choristerId\
         LEFT JOIN rehearsal ON attends.rehearsalId=rehearsal.rehearsalId\
         LEFT JOIN attendancestatus ON attends.attendanceId=attendancestatus.attendanceId\
-        WHERE attends.rehearsalId=?',
+        JOIN section ON chorister.sectionId=section.sectionId\
+        WHERE attends.rehearsalId=? ORDER BY section.sectionId, chorister.lastName',
         (rehearsalId,)
     ).fetchall()
     statuses = db.execute(
@@ -117,6 +129,8 @@ def reviewattendance(rehearsalId):
 
 
 @bp.route('/updateattendance/<int:rehearsalId>', methods=("GET","POST"))
+@login_required
+@attendadmin_required
 def updateattendance(rehearsalId):
     db = get_db()
     db.execute(
@@ -130,6 +144,8 @@ def updateattendance(rehearsalId):
     return redirect(url_for('rehearsals.reviewattendance', rehearsalId=rehearsalId))
 
 @bp.route('/addattendance/<int:rehearsalId>', methods=("GET","POST"))
+@login_required
+@attendadmin_required
 def addattendance(rehearsalId):
     print(request.form['choristerId'])
     db = get_db()
@@ -148,6 +164,8 @@ def addattendance(rehearsalId):
     return redirect(url_for('rehearsals.reviewattendance', rehearsalId=rehearsalId))
 
 @bp.route('/reviewchoristerattendance', methods=("GET","POST"))
+@login_required
+@attendadmin_required
 def rcalanding():
     if request.method=="POST":
         db = get_db()
@@ -158,6 +176,8 @@ def rcalanding():
     return render_template('rehearsals/review_chorister_attendance.html', member = None)
 
 @bp.route('/<choristerId>/reviewchoristerattendance', methods=("GET","POST"))
+@login_required
+@attendadmin_required
 def reviewchoristerattendance(choristerId):
     db = get_db()
 

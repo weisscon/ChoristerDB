@@ -1,13 +1,35 @@
+import functools
+
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for
 )
 from werkzeug.security import generate_password_hash
 
 from chorister_db.db import get_users, get_db
+from chorister_db.auth import login_required, dbadmin_required
 
 bp = Blueprint('dbadmin', __name__, url_prefix='/users')
 
+'''
+@login_required
+def dbadmin_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        permissions = get_users().execute(
+            'SELECT * FROM allowed WHERE permissionId = 1 AND accountId = ?',
+            g.user['accountId']
+        )
+        if permissions['permissionId'] is None:
+            return redirect(url_for('general.index'))
+    
+        return view(**kwargs)
+    
+    return 
+'''
+
 @bp.route('/user_management')
+@login_required
+@dbadmin_required
 def useradmin():
     usersdb = get_users()
     users = usersdb.execute(
@@ -17,6 +39,8 @@ def useradmin():
     return render_template('dbadmin/useradmin.html', users = users)
 
 @bp.route('/reset_forgot/<int:userId>', methods=('GET', 'POST'))
+@login_required
+@dbadmin_required
 def reset_forgot(userId):
     users = get_users()
 
@@ -44,6 +68,8 @@ def reset_forgot(userId):
     return render_template('dbadmin/reset_forgot.html', user = user)
 
 @bp.route('/set_permissions/<int:userId>')
+@login_required
+@dbadmin_required
 def set_permissions(userId):
 
     userdb = get_users()
@@ -74,6 +100,8 @@ def set_permissions(userId):
     return render_template('dbadmin/set_permissions.html', permissions = permissions, user = user)
 
 @bp.route('/remove_permission/<int:permissionId>/<int:userId>')
+@login_required
+@dbadmin_required
 def remove_permission(permissionId, userId):
     userdb = get_users()
 
@@ -85,8 +113,9 @@ def remove_permission(permissionId, userId):
 
     return redirect(url_for('dbadmin.set_permissions', userId = userId))
     
-
 @bp.route('/add_permission/<int:permissionId>/<int:userId>')
+@login_required
+@dbadmin_required
 def add_permission(permissionId, userId):
     userdb = get_users()
 
@@ -98,8 +127,9 @@ def add_permission(permissionId, userId):
     
     return redirect(url_for('dbadmin.set_permissions', userId = userId))
 
-
 @bp.route('/add_user', methods=('GET','POST'))
+@login_required
+@dbadmin_required
 def add_user():
     if request.method=='POST':
         users = get_users()
@@ -119,6 +149,8 @@ def add_user():
     return render_template('dbadmin/add_user.html')
 
 @bp.route('/delete_user/<int:userId>', methods=('GET','POST'))
+@login_required
+@dbadmin_required
 def delete_user(userId):
     users = get_users()
 
@@ -133,6 +165,8 @@ def delete_user(userId):
     return redirect(url_for('dbadmin.useradmin'))
 
 @bp.route('/add_values')
+@login_required
+@dbadmin_required
 def add_values():
     db = get_db()
 
@@ -155,6 +189,8 @@ def add_values():
     return render_template('dbadmin/add_values.html', sections = sections, statuses = statuses, payment_methods = payment_methods, attendance = attendance)
 
 @ bp.route('/update_sections', methods=['POST'])
+@login_required
+@dbadmin_required
 def update_sections():
     new_section = request.form['new_section']
     
@@ -170,6 +206,8 @@ def update_sections():
     return redirect(url_for('dbadmin.add_values'))
 
 @ bp.route('/update_statuses', methods=['POST'])
+@login_required
+@dbadmin_required
 def update_statuses():
     new_status = request.form['new_status']
     
@@ -185,6 +223,8 @@ def update_statuses():
     return redirect(url_for('dbadmin.add_values'))
 
 @ bp.route('/update_paymethods', methods=['POST'])
+@login_required
+@dbadmin_required
 def update_paymethods():
     new_method = request.form['new_method']
     
@@ -200,6 +240,8 @@ def update_paymethods():
     return redirect(url_for('dbadmin.add_values'))
 
 @ bp.route('/update_attendance', methods=['POST'])
+@login_required
+@dbadmin_required
 def update_attendance():
     new_attendance = request.form['new_attendance']
     
