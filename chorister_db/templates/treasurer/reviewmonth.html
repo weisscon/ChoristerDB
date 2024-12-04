@@ -5,17 +5,37 @@
 {% endblock %}
 
 {% block content %}
-  <form method="post">
+  <form method="post" style="width: fit-content;">
     <label for="month">Month</label>
-    <input type="number" name="month" id="month" required>
+    <select name="month" id="month" required>
+      <option value="1">January</option>
+      <option value="2">February</option>
+      <option value="3">March</option>
+      <option value="4">April</option>
+      <option value="5">May</option>
+      <option value="6">June</option>
+      <option value="7">July</label>
+      <option value="8">August</option>
+      <option value="9">September</option>
+      <option value="10">October</option>
+      <option value="11">November</option>
+      <option value="12">December</option>
+    </select>
     <label for="year">Year</label>
-    <input type="number" name="year" id = "year" required>
+    <input type="number" name="year" id="year" min="2024" style="appearance: textfield;" required>
     <input type="submit" formaction="{{ url_for('treasurer.reviewmonthlanding') }}" value="Show Month">
   </form>
   {% if payments %}
-    <p>Payments</p>
-    {% for payment in payments %}
-      <p><a href="{{ url_for('treasurer.reviewmember', choristerId = payment['choristerId']) }}">{{ payment['choristerId'] }}</a> {{ payment['firstName'] }} {{ payment['lastName'] }} Payment ID: <a href="{{ url_for('treasurer.paymentmonths', paymentId = payment['paymentId']) }}">{{ payment['paymentId'] }}</a> | {{ payment['amount'] }}, {{ payment['methodDescription'] }} (payment covers {{ payment['countMonth'] }} month{% if payment['countMonth']>1 %}s{% endif %} in total)</p>
-    {% endfor %}
+    <h2>Payments</h2>
+    <table>
+      <thead>
+        <tr><th>Chorister ID</th><th>Chorister Name</th><th>Payment ID</th><th>Amount</th><th>Payment Method</th><th>Number of Months Covered</th></tr>
+      </thead>
+      <tbody>
+      {% for payment in payments %}
+        <tr><td><a href="{{ url_for('treasurer.reviewmember', choristerId = payment['choristerId']) }}">{{ payment['choristerId'] }}</a></td><td>{{ payment['firstName'] }} {{ payment['lastName'] }} </td><td><a href="{{ url_for('treasurer.paymentmonths', paymentId = payment['paymentId']) }}">{{ payment['paymentId'] }}</a></td><td>${{ payment['amount'] }}</td><td>{{ payment['methodDescription'] }} </td><td>payment covers {{ payment['countMonth'] }} month{% if payment['countMonth']>1 %}s{% endif %} in total</td></tr>
+      {% endfor %}
+    </tbody>
+    </table>
   {% endif %}
 {% endblock %}

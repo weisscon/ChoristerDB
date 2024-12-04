@@ -7,22 +7,24 @@
 {% block content %}
 <table>
   <thead><tr><th>Chorister ID</th><th>Chorister Name</th><th>Attendance Status</th><th>Update</th></tr></thead>
+  <tbody>
   {% for attendee in attendees %}
       <tr><td>{{ attendee['choristerId'] }}</td><td> {{ attendee['firstName'] }} {{ attendee['lastName'] }}</td> 
-      <td><form method="post">
+      <td><form method="post" style="margin: 0%;">
         <input type="hidden" id="ctrl" name="ctrl" value="{{ attendee['choristerId'] }}">
         <select name="statusId" id="statusId">
           {% for status in statuses %}   
             <option {% if attendee['attendanceStatus']==status['attendanceStatus'] %} selected {% endif %} value="{{status['attendanceId']}}">{{ status['attendanceStatus'] }}</option>
           {% endfor %}
         </select></td>
-        <td><input type="submit" formaction="{{ url_for('rehearsals.updateattendance', rehearsalId=rehearsalId) }}" value="Update Attendance"></td>
+        <td><input type="submit" style="margin: 0%;" formaction="{{ url_for('rehearsals.updateattendance', rehearsalId=rehearsalId) }}" value="Update Attendance" ></td>
       </form>
     </tr>
   {% endfor %}
+</tbody>
 </table>
   <div style="display: flex;">
-    <form method="post">
+    <form method="post" style="display:inline;">
       <label for="choristerId">Add a Chorister by ID</label>
       <input id="choristerId" name="choristerId">
       <select name="statusId" id="statusId">

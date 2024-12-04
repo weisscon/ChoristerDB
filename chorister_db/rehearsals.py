@@ -147,6 +147,16 @@ def addattendance(rehearsalId):
 
     return redirect(url_for('rehearsals.reviewattendance', rehearsalId=rehearsalId))
 
+@bp.route('/reviewchoristerattendance', methods=("GET","POST"))
+def rcalanding():
+    if request.method=="POST":
+        db = get_db()
+        validation = db.execute('SELECT choristerId FROM chorister WHERE choristerId = ?',(request.form['choristerId'],)).fetchone()
+        if validation:
+            return redirect(url_for("rehearsals.reviewchoristerattendance", choristerId = request.form['choristerId']))
+        else: flash("Entered ID does not match any existing chorister")
+    return render_template('rehearsals/review_chorister_attendance.html', member = None)
+
 @bp.route('/<choristerId>/reviewchoristerattendance', methods=("GET","POST"))
 def reviewchoristerattendance(choristerId):
     db = get_db()
@@ -162,7 +172,7 @@ def reviewchoristerattendance(choristerId):
         FROM rehearsal\
         LEFT JOIN attends ON rehearsal.rehearsalId=attends.rehearsalId\
         LEFT JOIN attendancestatus ON attends.attendanceId=attendancestatus.attendanceId\
-        WHERE attends.choristerId=?',
+        WHERE attends.choristerId=? ORDER BY rehearsal.rehearsalId DESC',
         (choristerId,)
     ).fetchall()
 

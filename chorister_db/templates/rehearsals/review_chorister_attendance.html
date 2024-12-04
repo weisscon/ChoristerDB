@@ -5,15 +5,33 @@
 {% endblock %}
 
 {% block content %}
-  <p>{{ member['firstName'] }} {{ member['lastName'] }} email: {{ member['email'] }} phone: {{ member['phone'] }}</p>
+<div style="width: fit-content;">
+  <form method="post">
+    <label for="choristerId">Chorister ID</label>
+    <input name="choristerId" id="choristerId" required>
+    <input type="submit" formaction="{{ url_for('rehearsals.rcalanding') }}" value="Search Chorister">
+  </form>
+</div>
+
+{% if member %}
+<div class="user-card">
+  <p>{{ member['firstName'] }} {{ member['lastName'] }}</p>
   <p>{{ member['street1'] }}</p>
   {% if member['street2'] %}
     <p>{{ member['street2'] }}</p>
   {% endif %}
   <p>{{ member['city'] }}, {{ member['state'] }} {{ member['zip'] }}</p>
-
-  <p>Rehearsal ID | Date | Status |</p>
+  <hr></hr>
+  <p> <i>email:</i> {{ member['email'] }} <i>phone:</i> {{ member['phone'] }}</p>
+</div>
+<p></p>
+<table>
+  <thead><tr><th>Rehearsal ID</th><th>Date</th><th>Status</th></tr></thead>
+  <tbody>
   {% for meeting in meetings_attended %}
-    <p>{{ meeting['rehearsalId'] }} | <a href="{{ url_for('rehearsals.reviewattendance', rehearsalId=meeting['rehearsalId']) }}">{{ meeting['rehearsalDate'] }} </a>| {{ meeting['attendanceStatus'] }} |</p>
+    <tr><td>{{ meeting['rehearsalId'] }}</td><td><a href="{{ url_for('rehearsals.reviewattendance', rehearsalId=meeting['rehearsalId']) }}">{{ meeting['rehearsalDate'] }} </a></td><td>{{ meeting['attendanceStatus'] }}</td></tr>
   {% endfor %}
+</tbody>
+</table>
+{% endif %}
 {% endblock %}

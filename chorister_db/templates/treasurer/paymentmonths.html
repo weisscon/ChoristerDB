@@ -5,25 +5,39 @@
 {% endblock %}
 
 {% block content %}
-  <p>Payer: {{ payinfo['choristerId'] }} {{ payinfo['firstName'] }} {{ payinfo['lastName'] }}</p>
-  <p>Payment ID: {{ payinfo['paymentId'] }} | {{ payinfo['amount'] }}, {{ payinfo['methodDescription'] }}</p>
-  <ul>
+  <p><i>Payer:</i> {{ payinfo['choristerId'] }} {{ payinfo['firstName'] }} {{ payinfo['lastName'] }}</p>
+  <p><i>Payment ID:</i> {{ payinfo['paymentId'] }} | ${{ payinfo['amount'] }}, {{ payinfo['methodDescription'] }}</p>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; column-gap: 1rem; width:fit-content;">
+      <h2>Months paid</h2><p></p>
     {% for month in paymonths %}
-      <p> paid {{ month['month'] }}/{{ month['year'] }} 
-        <form method="post">
+      <p style="margin-top: 0%; margin-bottom: 0%;">{{ month['month'] }}/{{ month['year'] }} </p>
+        <form method="post" style="margin-top:0%; margin-bottom: 0%;">
           <input type="hidden" id="paymentid" name="paymentId" value="{{ payinfo['paymentId'] }}">
           <input type="hidden" id="monthId" name="monthId" value="{{ month['monthId'] }}">
           <input type="submit" formaction="{{ url_for('treasurer.removemonths') }}" value="Remove Month Assignment">
         </form>
-      </p>
     {% endfor %}
-  </ul>
-  <p>Add another month</p>
-  <form method="post">
+    </div>
+  <div class="user-card">
+  <p>Add month paid</p>
+  <form method="post" style="width:fit-content;">
     <label for="month">Month</label>
-    <input type="number" name="month" id="month" required>
-    <label for="year">Year</label>
-    <input type="number" name="year" id="year" required>
+    <select name="month" id="month" required>
+      <option value="1">January</option>
+      <option value="2">February</option>
+      <option value="3">March</option>
+      <option value="4">April</option>
+      <option value="5">May</option>
+      <option value="6">June</option>
+      <option value="7">July</label>
+      <option value="8">August</option>
+      <option value="9">September</option>
+      <option value="10">October</option>
+      <option value="11">November</option>
+      <option value="12">December</option>
+    </select>
+    <input type="number" name="year" id="year" min="2024" style="appearance: textfield;" required>
     <input type="submit" value="Add Month">
   </form>
+</div>
 {% endblock %}

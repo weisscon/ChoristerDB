@@ -1,13 +1,12 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Set Permissions{% endblock %}</h1>
+  <h1>{% block title %}Set Permissions for user "{{ user['username'] }}"{% endblock %}</h1>
   <p><a href="{{ url_for('dbadmin.useradmin') }}">Back</a></p>
 {% endblock %}
 
 {% block content %}
-  <p>USER: {{ user['username'] }}</p>
-  <div style="display: grid; grid-template-columns: 1fr 1fr; column-gap: 1rem; row-gap: .5rem; width: fit-content;">
+  <div style="margin-top: .5rem; display: grid; grid-template-columns: 1fr 1fr; column-gap: 1rem; row-gap: .5rem; width: fit-content;">
     {% for permission in permissions %}
       <div>{{ permission[1] }} </div>
       <div>

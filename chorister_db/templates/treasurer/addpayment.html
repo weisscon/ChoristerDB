@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+<div style="width: fit-content;">
   <form method="post">
     <label for="choristerId">Chorister ID</label>
     <input name="choristerId" id="choristerId" required>
@@ -15,7 +16,8 @@
         {% endfor %}
     </select>
     <label for="amount">Amount</label>
-    <input type="number" name="amount" id="amount">
+    <input type="number" name="amount" id="amount" style="appearance: textfield;">
     <input type="submit" value="Add Payment">
   </form>
+</div>
 {% endblock %}

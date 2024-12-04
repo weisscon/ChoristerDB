@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post">
+    <form method="post" width="fit-content;">
         <label for="choristerId">Chorister Id</label>
         <input name="choristerId" id="choristerId" required>
         <label for="First Name">First Name</label>
@@ -25,7 +25,7 @@
         <label for="email">Email</label>
         <input type="email" name="email" id="email">
         <label for="Phone number">Phone Number (no formatting)</label>
-        <input type="number" name="Phone number" id="Phone number">
+        <input type="number" name="Phone number" id="Phone number" style="appearance: textfield;">
         <label for="Section ID">Section</label>
         <select name="Section ID" id="Section ID">
             {% for section in sections %}
