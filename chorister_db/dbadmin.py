@@ -139,7 +139,8 @@ def add_user():
         validation_fail=users.execute(
             'SELECT * FROM account WHERE username = ?', (username,)
         ).fetchone()
-        if not(validation_fail == None):
+        
+        if validation_fail == None:
             try:
                 users.execute(
                     'INSERT INTO account(username, password, userset) VALUES (?, ?, 0)',

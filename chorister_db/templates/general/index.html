@@ -9,39 +9,39 @@
     <p>This should be a link to a "Reset Password" page.  It appears for all users.</p>
     <p><a href="{{ url_for('general.reset_password') }}">Reset Password</a></p>
     </div>
-    <div class="module">
     {% if 1 in permissions %}
+        <div class="module">
         <h2>Database Administration Module</h2>
         <p>This will be a link to DB Admin pages.  This only appears if the user has DB admin privileges</p>
         <p><a href="{{ url_for('dbadmin.useradmin') }}">User Management</a></p>
         <p><a href="{{ url_for('dbadmin.add_values') }}">Add Validation Values</a></p>
+        </div>
     {% endif %}
-    </div>
-    <div class="module">
     {% if 2 in permissions %}
+        <div class="module">
         <h2>Chorister Administration Module</h2>
         <p>This will be a link to Chorister Admin pages.  This only appears if the user has Chorister admin privileges</p>
         <p><a href="{{ url_for('choristers.members') }}">View All Members</a></p>
         <p><a href="{{ url_for('choristers.add_member') }}">Add a New Member</a></p>
+        </div>
     {% endif %}
-    </div>
-    <div class="module">
     {% if 3 in permissions %}
+        <div class="module">
         <h2>Attendance and Rehearsal Module</h2>
         <p>This will be a link to Attendance pages.  This only appears if the user has Attendance privileges</p>
         <p><a href="{{ url_for('rehearsals.meetings') }}">View All Rehearsals</a></p>
         <p><a href="{{ url_for('rehearsals.add_meeting') }}">Add a New Rehearsal</a></p>
         <p><a href="{{ url_for('rehearsals.rcalanding') }}">Review a Chorister's Attendance</a></p>
+        </div>
     {% endif %}
-    </div>
-    <div class="module">
     {% if 4 in permissions %}
+        <div class="module">
         <h2>Treasurer Module</h2>
         <p>This will be a link to Treasurer pages.  This only appears if the user has Treasurer privileges</p>
         <p><a href="{{ url_for('treasurer.addpayment') }}">Add a Payment</a></p>
         <p><a href="{{ url_for('treasurer.reviewmemberlanding') }}">Review a Chorister's Payments</a></p>
         <p><a href="{{ url_for('treasurer.reviewmonthlanding') }}">Review a Month</a></p>
+        </div>
     {% endif %}
-    </div>
 </div>
 {% endblock %}
