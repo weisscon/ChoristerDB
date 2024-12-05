@@ -97,6 +97,9 @@ def takeattendance(rehearsalId):
     db = get_db()
     for entry in request.form.to_dict():
         db.execute(
+            'DELETE FROM attends WHERE choristerId = ? AND rehearsalId = ?', (entry, rehearsalId,)
+        )
+        db.execute(
             'INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES (?, ?, ?)',
             (entry, rehearsalId, request.form[entry][1],)
         )
@@ -182,7 +185,8 @@ def reviewchoristerattendance(choristerId):
     db = get_db()
 
     member = db.execute(
-        'SELECT * FROM chorister WHERE choristerId = ?',
+        'SELECT * FROM chorister AS c JOIN section ON c.sectionId = section.sectionId'
+         ' JOIN status ON c.statusId = status.statusId WHERE choristerId = ?',
         (choristerId,)
     ).fetchone()
 

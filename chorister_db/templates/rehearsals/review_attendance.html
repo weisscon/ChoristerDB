@@ -2,6 +2,7 @@
 
 {% block header %}
   <h1>{% block title %}Review Attendance: {{ rehearsalDate['rehearsalDate'] }}{% endblock %}</h1>
+  <p><a href="{{ url_for('rehearsals.meetings') }}">Back</a></p>
 {% endblock %}
 
 {% block content %}

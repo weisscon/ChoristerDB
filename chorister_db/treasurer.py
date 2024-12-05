@@ -65,7 +65,8 @@ def reviewmember(choristerId):
     db = get_db()
 
     member = db.execute(
-        'SELECT * FROM chorister WHERE choristerId = ?',
+        'SELECT * FROM chorister AS c JOIN section ON c.sectionId = section.sectionId'
+         ' JOIN status ON c.statusId = status.statusId WHERE choristerId = ?',
         (choristerId,)
     ).fetchone()
 

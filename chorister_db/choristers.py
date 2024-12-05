@@ -36,7 +36,6 @@ def add_member():
     choristers = get_db()
 
     if request.method=="POST":
-        choristerId = request.form['choristerId'] #had to update this - originally had 'First Name' in the argument.
         firstName = request.form['First Name']
         lastName = request.form['Last Name']
         street1 = request.form['Street Address 1']
@@ -50,9 +49,9 @@ def add_member():
         statusId = request.form['Status ID']
         try:
             choristers.execute(
-                'INSERT INTO chorister (choristerId, firstName, lastName, street1, street2, city, state, zip, email, phone, sectionId, statusId)'
-                 ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                 (choristerId, firstName, lastName, street1, street2, city, state, zip, email, phone, sectionId, statusId)
+                'INSERT INTO chorister (firstName, lastName, street1, street2, city, state, zip, email, phone, sectionId, statusId)'
+                 ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                 (firstName, lastName, street1, street2, city, state, zip, email, phone, sectionId, statusId)
             )
             choristers.commit()
             flash("New chorister added")

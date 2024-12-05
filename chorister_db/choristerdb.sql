@@ -17,7 +17,7 @@ Create Tables
 ******************************/
 
 CREATE TABLE chorister (
-	choristerId TEXT PRIMARY KEY NOT NULL,
+	choristerId INTEGER PRIMARY KEY AUTOINCREMENT,
 	firstName TEXT NOT NULL,
 	lastName TEXT NOT NULL,
 	street1 TEXT NOT NULL,
@@ -135,29 +135,29 @@ INSERT INTO month (month, year) VALUES ('4','2025');
 Chorister data and attendance data - fake
 ********************************/
 
-INSERT INTO chorister (choristerId, firstName, lastName, street1, street2, city, state, zip, email, sectionId, statusId) 
-	VALUES ('T0001','John','Smith','1 Main St','Apt 1','Portland','ME','04103','johnsmith@example.com','5','2');
+INSERT INTO chorister (firstName, lastName, street1, street2, city, state, zip, email, sectionId, statusId) 
+	VALUES ('John','Smith','1 Main St','Apt 1','Portland','ME','04103','johnsmith@example.com','5','2');
 
-INSERT INTO chorister (choristerId, firstName, lastName, street1, street2, city, state, zip, email, sectionId, statusId) 
-	VALUES ('A0001','Janet','Smith','1 Main St','Apt 1','Portland','ME','04103','janetsmith@example.com','3','1');
+INSERT INTO chorister (firstName, lastName, street1, street2, city, state, zip, email, sectionId, statusId) 
+	VALUES ('Janet','Smith','1 Main St','Apt 1','Portland','ME','04103','janetsmith@example.com','3','1');
 
-INSERT INTO chorister (choristerId, firstName, lastName, street1, city, state, zip, email, phone, sectionId, statusId) 
-	VALUES ('S0001','Jane','Doe','2 Test Ave','Portland','ME','04103','janedoe@example.com','2075555555','1','1');
+INSERT INTO chorister (firstName, lastName, street1, city, state, zip, email, phone, sectionId, statusId) 
+	VALUES ('Jane','Doe','2 Test Ave','Portland','ME','04103','janedoe@example.com','2075555555','1','1');
 
-INSERT INTO chorister (choristerId, firstName, lastName, street1, city, state, zip, email, phone, sectionId, statusId) 
-	VALUES ('T0002','Nat','Test','PO Box 1357','Portland','ME','04103','nat@test.com','2075551234','5','3');
+INSERT INTO chorister (firstName, lastName, street1, city, state, zip, email, phone, sectionId, statusId) 
+	VALUES ('Nat','Test','PO Box 1357','Portland','ME','04103','nat@test.com','2075551234','5','3');
 
-INSERT INTO chorister (choristerId, firstName, lastName, street1, street2, city, state, zip, email, phone, sectionId, statusId) 
-	VALUES ('B0001','Larry','Gordon','3 Yard Ln','Unit 7','Westbrook','ME','04092','lgordon@example.com','8025550000','8','2');
+INSERT INTO chorister (firstName, lastName, street1, street2, city, state, zip, email, phone, sectionId, statusId) 
+	VALUES ('Larry','Gordon','3 Yard Ln','Unit 7','Westbrook','ME','04092','lgordon@example.com','8025550000','8','2');
 
-INSERT INTO chorister (choristerId, firstName, lastName, street1, city, state, zip, email, phone, sectionId, statusId) 
-	VALUES ('S0002','Kristin','Chenowyth','4 Broad Way','Portland','ME','04203','diva@broadway.com','2075552020','1','4');
+INSERT INTO chorister (firstName, lastName, street1, city, state, zip, email, phone, sectionId, statusId) 
+	VALUES ('Kristin','Chenowyth','4 Broad Way','Portland','ME','04203','diva@broadway.com','2075552020','1','4');
 
-INSERT INTO chorister (choristerId, firstName, lastName, street1, city, state, zip, sectionId, statusId) 
-	VALUES ('T0003','Placido','Domingo','5 Spain Ln','Westbrook','ME','04092','6','1');
+INSERT INTO chorister (firstName, lastName, street1, city, state, zip, sectionId, statusId) 
+	VALUES ('Placido','Domingo','5 Spain Ln','Westbrook','ME','04092','6','1');
 
-INSERT INTO chorister (choristerId, firstName, lastName, street1, street2, city, state, zip, email, phone, sectionId, statusId) 
-	VALUES ('B0002','Greg','Smalls','6 Low Rd','Apt 2','Westbrook','ME','04092','smallg@test.com','2075556666','8','1');
+INSERT INTO chorister (firstName, lastName, street1, street2, city, state, zip, email, phone, sectionId, statusId) 
+	VALUES ('Greg','Smalls','6 Low Rd','Apt 2','Westbrook','ME','04092','smallg@test.com','2075556666','8','1');
 
 INSERT INTO rehearsal (rehearsalDate) VALUES ('8/1/24');
 INSERT INTO rehearsal (rehearsalDate) VALUES ('8/8/24');
@@ -175,66 +175,66 @@ INSERT INTO rehearsal (rehearsalDate) VALUES ('10/24/24');
 INSERT INTO rehearsal (rehearsalDate) VALUES ('10/31/24');
 INSERT INTO rehearsal (rehearsalDate) VALUES ('11/7/24');
 
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('S0001','1','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('S0002','1','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('A0001','1','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('T0001','1','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('T0003','1','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('B0001','1','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('B0002','1','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('S0001','2','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('S0002','2','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('A0001','2','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('T0001','2','3');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('T0003','2','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('B0001','2','2');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('B0002','2','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('S0001','3','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('S0002','3','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('A0001','3','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('T0001','3','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('T0003','3','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('B0002','3','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('S0001','4','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('S0002','4','2');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('A0001','4','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('T0001','4','3');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('T0003','4','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('B0002','4','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('S0001','5','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('S0002','5','3');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('A0001','5','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('T0001','5','3');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('T0003','5','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('B0002','5','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('S0001','6','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('S0002','6','2');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('A0001','6','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('T0003','6','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('B0002','6','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('S0001','7','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('A0001','7','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('T0003','7','1');
-INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('B0002','7','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('3','1','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('6','1','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('2','1','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('1','1','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('7','1','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('5','1','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('8','1','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('3','2','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('6','2','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('2','2','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('1','2','3');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('7','2','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('5','2','2');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('8','2','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('3','3','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('6','3','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('2','3','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('1','3','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('7','3','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('8','3','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('3','4','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('6','4','2');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('2','4','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('1','4','3');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('7','4','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('8','4','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('3','5','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('6','5','3');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('2','5','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('1','5','3');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('7','5','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('8','5','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('3','6','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('6','6','2');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('2','6','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('7','6','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('8','6','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('3','7','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('2','7','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('7','7','1');
+INSERT INTO attends (choristerId, rehearsalId, attendanceId) VALUES ('8','7','1');
 
 /******************************
 Payment Data - fake
 ******************************/
 
-INSERT INTO payment (choristerId, methodId, amount) VALUES ('T0001','1','100');
-INSERT INTO payment (choristerId, methodId, amount) VALUES ('A0001','1','100');
-INSERT INTO payment (choristerId, methodId, amount) VALUES ('S0001','2','400');
-INSERT INTO payment (choristerId, methodId, amount) VALUES ('B0001','1','50');
-INSERT INTO payment (choristerId, methodId, amount) VALUES ('S0002','3','100');
-INSERT INTO payment (choristerId, methodId, amount) VALUES ('T0003','4','100');
-INSERT INTO payment (choristerId, methodId, amount) VALUES ('B0002','2','200');
-INSERT INTO payment (choristerId, methodId, amount) VALUES ('T0001','2','100');
-INSERT INTO payment (choristerId, methodId, amount) VALUES ('A0001','2','100');
-INSERT INTO payment (choristerId, methodId, amount) VALUES ('S0002','3','100');
-INSERT INTO payment (choristerId, methodId, amount) VALUES ('T0003','4','100');
-INSERT INTO payment (choristerId, methodId, amount) VALUES ('A0001','1','100');
-INSERT INTO payment (choristerId, methodId, amount) VALUES ('T0003','5','0');
-INSERT INTO payment (choristerId, methodId, amount) VALUES ('B0002','2','100');
+INSERT INTO payment (choristerId, methodId, amount) VALUES ('1','1','100');
+INSERT INTO payment (choristerId, methodId, amount) VALUES ('2','1','100');
+INSERT INTO payment (choristerId, methodId, amount) VALUES ('3','2','400');
+INSERT INTO payment (choristerId, methodId, amount) VALUES ('5','1','50');
+INSERT INTO payment (choristerId, methodId, amount) VALUES ('6','3','100');
+INSERT INTO payment (choristerId, methodId, amount) VALUES ('7','4','100');
+INSERT INTO payment (choristerId, methodId, amount) VALUES ('8','2','200');
+INSERT INTO payment (choristerId, methodId, amount) VALUES ('1','2','100');
+INSERT INTO payment (choristerId, methodId, amount) VALUES ('2','2','100');
+INSERT INTO payment (choristerId, methodId, amount) VALUES ('6','3','100');
+INSERT INTO payment (choristerId, methodId, amount) VALUES ('7','4','100');
+INSERT INTO payment (choristerId, methodId, amount) VALUES ('2','1','100');
+INSERT INTO payment (choristerId, methodId, amount) VALUES ('7','5','0');
+INSERT INTO payment (choristerId, methodId, amount) VALUES ('8','2','100');
 
 INSERT INTO paymentmonth (paymentId, monthId) VALUES ('1','1');
 INSERT INTO paymentmonth (paymentId, monthId) VALUES ('2','1');

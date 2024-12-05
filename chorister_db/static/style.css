@@ -31,3 +31,6 @@ thead { border: 1px; border-color: black; border-style: solid; height: 2rem; bac
 th { padding: 0rem 1rem; }
 .user-card { border: black 2px; border-radius: 5px; border-style: solid; padding: 1rem; width:fit-content; }
 .user-card > p {margin: 0rem;}
+.module { border: #377ba8 5px; border-radius: 15px; border-style: solid; margin: 1rem; padding: .25rem .75rem; width: 100%; background-color: #f2f2f2;}
+.module > h2 { color:#377ba8; text-align: center; text-decoration: none;}
+.required { color: red; }

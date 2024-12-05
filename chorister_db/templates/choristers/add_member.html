@@ -6,34 +6,32 @@
 
 {% block content %}
     <form method="post" width="fit-content;">
-        <label for="choristerId">Chorister Id</label>
-        <input name="choristerId" id="choristerId" required>
-        <label for="First Name">First Name</label>
+        <label for="First Name">First Name <span class="required">*</span></label>
         <input name="First Name" id="First Name" required>
-        <label for="Last Name">Last Name</label>
+        <label for="Last Name">Last Name <span class="required">*</span></label>
         <input name="Last Name" id="Last Name" required>
-        <label for="Street Address 1">Address 1</label>
+        <label for="Street Address 1">Address 1 <span class="required">*</span></label>
         <input name="Street Address 1" id="Street Address 1" required>
         <label for="Street Address 2">Address 2</label>
         <input name="Street Address 2" id="Street Address 2">
-        <label for="City">City</label>
+        <label for="City">City <span class="required">*</span></label>
         <input name="City" id="City" required>
-        <label for="State">State</label>
+        <label for="State">State <span class="required">*</span></label>
         <input name="State" id="State" required>
-        <label for="ZIP Code">ZIP Code</label>
+        <label for="ZIP Code">ZIP Code <span class="required">*</span></label>
         <input name="ZIP Code" id="ZIP Code" required>
         <label for="email">Email</label>
         <input type="email" name="email" id="email">
         <label for="Phone number">Phone Number (no formatting)</label>
         <input type="number" name="Phone number" id="Phone number" style="appearance: textfield;">
-        <label for="Section ID">Section</label>
-        <select name="Section ID" id="Section ID">
+        <label for="Section ID">Section <span class="required">*</span></label>
+        <select name="Section ID" id="Section ID" required>
             {% for section in sections %}
                 <option value="{{ section['sectionId'] }}">{{ section['sectionName'] }}</option>
             {% endfor %}
         </select>
-        <label for="Status ID">Status</label>
-        <select name="Status ID" id="Status ID">
+        <label for="Status ID">Status <span class="required">*</span></label>
+        <select name="Status ID" id="Status ID" required>
             {% for status in statuses %}
                 <option value="{{ status['statusId'] }}">{{ status['statusName'] }}</option>
             {% endfor %}

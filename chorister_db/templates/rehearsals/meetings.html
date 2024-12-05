@@ -7,7 +7,7 @@
 {% block content %}
 <p><a href="{{ url_for('rehearsals.add_meeting') }}">Add a rehearsal</a></p>
 <table>
-  <thead><tr><th>Rehearsal ID</th><th>Date</th><th>Take Attendance</th></tr></thead>
+  <thead><tr><th>Rehearsal ID</th><th>Date</th><th> </th></tr></thead>
   <tbody>
   {% for meeting in rehearsal %}
     <tr><td>{{ meeting['rehearsalId'] }}</td><td><a href="{{ url_for('rehearsals.reviewattendance', rehearsalId=meeting['rehearsalId']) }}">{{ meeting['rehearsalDate'] }} </a></td><td><button><a href="{{ url_for('rehearsals.startattendance', rehearsalId = meeting['rehearsalId']) }}">Take Attendance</a></button></td></tr>

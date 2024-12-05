@@ -136,15 +136,20 @@ def add_user():
         username = request.form['username']
         password = request.form['password']
 
-        try:
-            users.execute(
-                'INSERT INTO account(username, password, userset) VALUES (?, ?, 0)',
-                (username, generate_password_hash(password))
-            )
-            users.commit()
-            flash("New user created.  Make sure to update permissions and get user to update password on login.")
-        except Exception as error:
-            flash(error)
+        validation_fail=users.execute(
+            'SELECT * FROM account WHERE username = ?', (username,)
+        ).fetchone()
+        if not(validation_fail == None):
+            try:
+                users.execute(
+                    'INSERT INTO account(username, password, userset) VALUES (?, ?, 0)',
+                    (username, generate_password_hash(password))
+                )
+                users.commit()
+                flash("New user created.  Make sure to update permissions and get user to update password on login.")
+            except Exception as error:
+                flash(error)
+        else: flash("Username already in use.")
 
     return render_template('dbadmin/add_user.html')
 
