@@ -60,32 +60,42 @@ Clicking on a chorister's ID on this page will take the user to that chorister's
 Click on "Take Attendance" next to a rehearsal to take attendance for a particular voice section. The page will be blank until a section is selected.  After selecting the section, the list of members of that section will be displayed. 
 
 Choose the appropriate attendance status for each member of the voice section and click "Submit Attendance".  Note that this utility is intended to insert new data, and will warn a user if they attempt to take attendance for a specific section on a rehearsal where attendance has already been taken for that rehearsal.
+
 ![Attendance by Voice Section](images/attendance_by_voice_section.png)
 
 ### Adding New Rehearsals
 The "Add a New Rehearsal" link (also present in the Rehearsals page) directs you to a page where you can enter the date of the new rehearsal. Click "Add New Rehearsal" and you will be directed to the list of all rehearsals, with the new rehearsal added.  Rehearsal's are intended to be named by the date they occur on, and created in the order that they will occur, but the rehearsal date field will take any string.  This is both because the SQLite database used in this project doesn't have a Date/Time datatype, but also so that rehearsals can occur on the same date and be distinguished if there are e.g. section rehearsals.
+
 ![Adding a New Rehearsal](images/add_rehearsal.png)
 
 ### Reviewing a Chorister's Attendance
 The "View a chorister's attendance" link allows you to search a chorister by ID. When you click "Search chorister", the chorister's information is displayed, as well as a record of the chorister's attendance, such as seen below:
+
 ![Reviewing a chorister's attendance](images/review_chorister_attendance.png)
+
 Click on the date for a rehearsal to navigate to the list of attendees of that rehearsal, which can also be found through the "View All Rehearsals" link, as described above.
 
 ## Treasurer
 ### Making Payments
 The "Add a Payment" link allows you to make a payment associated with a choir member. Enter the chorister's ID, the payment method (cash, venmo etc.) and the amount, and click "Add Payment".  This payment can then be reviewed on the chorister's payments list.
+
 ![Making a payment](images/add_payment.png)
 
 ### Reviewing a Chorister's Payments
 The "Review a Chorister's Payments" link allows you to search by Chorister ID and view the Chorister's payment history.
+
 ![Reviewing a chorister's payment history](images/review_chorister_payment.png)
+
 Click on a Payment Id to view or edit which months that payment is assigned to. You may assign more months to a payment, or unassign previously assigned months from a payment.
+
 ![Payment month assignment](images/payment_month_assignment.png)
 
 ### Reviewing a month's payments
 The "Review a Month" link allows you to enter a month and year, and view all payments associated with that particular month.  On this page, clicking a payment's ID takes you to the page to review and edit which months that payment is assigned to, and clicking on the user's ID takes you to the page that shows the Chorister's payment history.
+
 ![Review Month Payments](images/review_month_payments.png)
 
 ## ER Diagram
 This is the Entity-Relationship Diagram of the database we used.
+
 ![ER Diagram](images/er_diagram.png)
