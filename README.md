@@ -99,3 +99,7 @@ The "Review a Month" link allows you to enter a month and year, and view all pay
 This is the Entity-Relationship Diagram of the database we used.
 
 ![ER Diagram](images/er_diagram.png)
+
+This is the Relational Schema based on the ER diagram:
+
+![Relational Schema](images/RelationalSchema.png)
